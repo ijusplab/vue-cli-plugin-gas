@@ -39,13 +39,13 @@ module.exports = (api, options) => {
         if (createScript) {
             console.log('📝 Creating new script...');
             execSync('echo creating new script...');
-            execSync(`cd ${api.resolve('src')} && cd ..`);
+            execSync(`cd ${api.resolve('dist')} && cd ..`);
             execSync(`clasp create --type ${scriptType} --title "${appName}" --rootDir ./dist`);
             execSync(`cd ..`);
         } else {
             console.log('📝 Setting up existing script...');
             execSync('echo setting up existing script...');
-            execSync(`cd ${api.resolve('src')} && cd ..`);
+            execSync(`cd ${api.resolve('dist')} && cd ..`);
             execSync(`clasp create --title "${appName}" --parentId "${scriptId}" --rootDir ./dist`);
             execSync(`cd ..`);
         }
