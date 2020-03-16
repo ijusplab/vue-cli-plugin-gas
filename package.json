@@ -1,6 +1,6 @@
 {
   "name": "@ijusplab/vue-cli-plugin-gas",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Vue CLI plugin to setup Google Apps Script project using Vue and Vuetify as frontend tools.",
   "main": "index.js",
   "scripts": {
