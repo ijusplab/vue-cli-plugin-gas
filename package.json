@@ -27,9 +27,8 @@
   "dependencies": {
     "@types/node": "^13.9.1",
     "camelcase": "^5.3.1",
+    "countries-and-timezones": "^2.0.5",
     "spdx-license-list": "^6.1.0"
   },
-  "devDependencies": {
-    "countries-and-timezones": "^2.0.5"
-  }
+  "devDependencies": {}
 }
