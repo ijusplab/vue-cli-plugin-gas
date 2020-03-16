@@ -4,33 +4,28 @@ Vue CLI plugin to setup Google Apps Script project using Vue and Vuetify as fron
 
 ## Setup:
 
-#### 1. Create Vue Project
+#### 1. Install Clasp globally
+
+```javascript
+npm -g install @google/clasp // or yarn global add @google/clasp
+```
+
+#### 2. Create your Vue Project
 
 ```javascript
 vue create <project_name>
 cd <project_name>
 ```
 
-#### 2. Install Clasp and create new GAS project
+#### 3. Install and run `@ijusplab/vue-cli-plugin-gas`
 
 ```javascript
-npm -g install @google/clasp // or yarn global add @google/clasp
-
-clasp login
-clasp create --type webapp --rootDir ./dist
+npm install --save-dev @ijusplab/vue-cli-plugin-gas // or yarn install -D @ijusplab/vue-cli-plugin-gas
+vue invoke @ijusplab/vue-cli-plugin-gas
 ```
 
-#### 3. Run `vue-cli-plugin-gas`
+#### 4. Deploy files to Google Drive
 
 ```javascript
-npm install --save-dev <full_path_to_plugin> // or yarn install -D <full_path_to_plugin>
-vue invoke vue-cli-plugin-gas
-```
-
-#### 4. Make first build and push files
-
-```javascript
-npm run build // or yarn build
-
-clasp push -f
+npm run deploy // or yarn deploy
 ```
