@@ -1,6 +1,6 @@
 # @ijusplab/vue-cli-plugin-gas
 
-Vue CLI plugin to setup Google Apps Script project using Vue as frontend tool. Already integrates [clasp](https://github.com/google/clasp/) commands when initializing project (in order to create new project or clone an existing one) and deploying (by automatically synchronizing the manifest file, building to `dist` folder and executing `clasp push`).
+Vue CLI plugin to setup a Google Apps Script project using [Vue](https://vuejs.org/) as the front end tool. Already integrates [clasp](https://github.com/google/clasp/) commands when initializing your project (in order to create new project or clone an existing one) or bundling and deploying your code (by automatically synchronizing the manifest file, building your code for production to the `dist` folder and running `clasp push`).
 
 ### Setup:
 
@@ -22,18 +22,16 @@ cd <project_name>
 ```javascript
 vue add @ijusplab/vue-cli-plugin-gas
 ```
-
-> When running the script, the plugin will run `clasp login`, which
-  may ask you to give permissions to access your google account. 
-
-
+> When running the script, the plugin will execute `clasp login` behind the
+  scenes, which may result in clasp asking you for permissions to access 
+  your google account. 
 
 #### 4. Deploy files to Google Drive
 
 ```javascript
 npm run deploy // or yarn deploy
 ```
-> Important: behind the scenes, the plugin runs `clasp push`, not 
+> Important: behind the scenes, the plugin executes `clasp push`, not 
   `clasp deploy`. So, if you want to deploy a new version of your
   script you may want to run the command `clasp deploy` yourself or
   set your new version directly in the Google Apps Script IDE.   
