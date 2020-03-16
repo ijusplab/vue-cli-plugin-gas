@@ -1,6 +1,6 @@
 # @ijusplab/vue-cli-plugin-gas
 
-Vue CLI plugin to setup a Google Apps Script project using [Vue](https://vuejs.org/) as the front end tool. Already integrates [clasp](https://github.com/google/clasp/) commands when initializing your project (in order to create new project or clone an existing one) or bundling and deploying your code (by automatically synchronizing the manifest file, building your code for production to the `dist` folder and running `clasp push`).
+This is a Vue CLI plugin that will help you to setup a Google Apps Script project using [Vue](https://vuejs.org/) as the front end tool. The plugin already integrates [clasp](https://github.com/google/clasp/) commands when initializing your project (by executing `clasp clone` or `clasp create`) or bundling and deploying your code (by automatically synchronizing the manifest file, building your code for production to the `dist` folder and running `clasp push`).
 
 ### Setup:
 
