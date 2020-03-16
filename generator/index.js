@@ -30,32 +30,11 @@ module.exports = (api, options) => {
 
     api.postProcessFiles(files => {
 
-        if (!existsSync(api.resolve('dist'))) {
-            mkdirSync(api.resolve('dist'));
-        }
-
-        console.log('🔑 Launching clasp login...');
-        execSync('echo lauching clasp login...');
-        if (createScript) {
-            console.log('📝 Creating new script...');
-            execSync('echo creating new script...');
-            execSync(`cd ${api.resolve('dist')} && cd ..`);
-            execSync(`clasp create --type ${scriptType} --title "${appName}" --rootDir ./dist`);
-            execSync(`cd ..`);
-        } else {
-            console.log('📝 Setting up existing script...');
-            execSync('echo setting up existing script...');
-            execSync(`cd ${api.resolve('dist')} && cd ..`);
-            execSync(`clasp create --title "${appName}" --parentId "${scriptId}" --rootDir ./dist`);
-            execSync(`cd ..`);
-        }
-        
         console.log('📝 Changing files...');
         execSync('echo changing files...');
 
         if (!files['README.md']) files['README.md'] = '\n ';
         if (!files['.env']) files['.env'] = '\n ';
-        if ('dist/dummy.txt' in files) delete files['dist/dummy.txt'];
         if (usesTypescript) {
             delete files['src/server/ErrorHandler.js'];
             delete files['src/server/Service.js'];
@@ -82,10 +61,30 @@ module.exports = (api, options) => {
     });
 
     api.onCreateComplete(() => {
-        copyFileSync(api.resolve('dist', 'appsscript.json'), api.resolve('src', 'server', 'appsscript.json'));
-        unlinkSync(api.resolve('dist', 'appsscript.json'));
-        let scriptConfig = JSON.parse(readFileSync(api.resolve('src', 'server', 'appsscript.json'), { encoding: 'utf-8' }));
-        scriptConfig.timeZone = timezone;
-        writeFileSync(api.resolve('src', 'server', 'appsscript.json'), JSON.stringify(scriptConfig));
+
+        if (!existsSync(api.resolve('dist'))) mkdirSync(api.resolve('dist'));
+
+        console.log('🔑 Launching clasp login...');
+        execSync('echo lauching clasp login...');
+        execSync('clasp login');
+        if (createScript) {
+            console.log('📝 Creating new script...');
+            execSync('echo creating new script...');
+            execSync(`cd ${api.resolve('dist')} && cd .. && clasp create --type ${scriptType} --title "${appName}" --rootDir ./dist`);
+        } else {
+            console.log('📝 Setting up existing script...');
+            execSync('echo setting up existing script...');
+            execSync(`cd ${api.resolve('dist')} && cd .. && clasp create --title "${appName}" --parentId "${scriptId}" --rootDir ./dist`);
+        }
+
+        if (existsSync(api.resolve('dist', 'appsscript.json'))) {
+            copyFileSync(api.resolve('dist', 'appsscript.json'), api.resolve('src', 'server', 'appsscript.json'));
+            unlinkSync(api.resolve('dist', 'appsscript.json'));
+            let scriptConfig = JSON.parse(readFileSync(api.resolve('src', 'server', 'appsscript.json'), { encoding: 'utf-8' }));
+            scriptConfig.timeZone = timezone;
+            writeFileSync(api.resolve('src', 'server', 'appsscript.json'), JSON.stringify(scriptConfig));
+        } else {
+            console.log('GAS project manifest file not found.');
+        }
     });
 }
