@@ -1,6 +1,6 @@
-# vue-cli-plugin-gas
+# @ijusplab/vue-cli-plugin-gas
 
-Vue CLI plugin to setup Google Apps Script project using Vue and Vuetify as frontend tools, using typescript for server code (in order to have code completion) and Vue/Vuetify for client code.
+Vue CLI plugin to setup Google Apps Script project using Vue as frontend tool.
 
 ## Setup:
 
