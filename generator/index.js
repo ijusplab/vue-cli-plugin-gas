@@ -64,12 +64,12 @@ module.exports = (api, options) => {
         updateFile(files, 'public/index.html', content => indexUpdater(content, options));
         updateFile(files, '.env', content => envUpdater(content, options));
         updateFile(files, '.gitignore', content => gitignoreUpdater(content, options));
-        updateFile(files, api.entryFile, content => entryFileUpdater(content, { usesTypescript }));
+        updateFile(files, api.entryFile, content => entryFileUpdater(content, { usesTypescript, usesEslint }));
         updateFile(files, 'src/components/HelloWorld.vue', content => componentUpdater(content, options));
 
         if (addLicense) files['LICENSE'] = getLicenseText(options);
 
-        if (usesTypescript && 'src/plugins/vuetify.ts' in files) updateFile(files, 'src/plugins/vuetify.ts', content => vuetifyUpdater(content, options));
+        if (usesTypescript && 'src/plugins/vuetify.ts' in files) updateFile(files, 'src/plugins/vuetify.ts', content => vuetifyUpdater(content, { usesTypescript, usesEslint }));
 
         if (usesEslint) {
             files['.eslintignore'] = getEslintignore();
