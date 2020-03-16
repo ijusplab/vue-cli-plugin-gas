@@ -1,0 +1,35 @@
+{
+  "name": "vue-cli-plugin-gas",
+  "version": "0.1.0",
+  "description": "Vue CLI plugin to setup Google Apps Script project using Vue and Vuetify as frontend tools.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/ijusplab/incubadora/vue-cli-plugin-gas.git"
+  },
+  "homepage": "https://gitlab.com/ijusplab/incubadora/vue-cli-plugin-gas#readme",
+  "keywords": [
+    "vue",
+    "plugin",
+    "gas",
+    "google",
+    "apps",
+    "script"
+  ],
+  "author": "caio.moyses.lima@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/ijusplab/incubadora/vue-cli-plugin-gas/issues"
+  },
+  "dependencies": {
+    "@types/node": "^13.9.1",
+    "camelcase": "^5.3.1",
+    "spdx-license-list": "^6.1.0"
+  },
+  "devDependencies": {
+    "countries-and-timezones": "^2.0.5"
+  }
+}
