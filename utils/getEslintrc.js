@@ -31,5 +31,5 @@ module.exports = (api) => {
         config.parserOptions.parser = '@typescript-eslint/parser';
     }
 
-    return JSON.stringify(config);
+    return JSON.stringify(config, null, 4);
 }
