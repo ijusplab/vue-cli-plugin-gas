@@ -1,6 +1,6 @@
 {
   "name": "@ijusplab/vue-cli-plugin-gas",
-  "version": "1.0.13",
+  "version": "1.1.0",
   "description": "Vue CLI plugin to setup a Google Apps Script project using Vue as the frontend tool.",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,7 @@
   "dependencies": {
     "camelcase": "^5.3.1",
     "countries-and-timezones": "^2.0.5",
+    "fs-extra": "^8.1.0",
     "spdx-license-list": "^6.1.0"
   },
   "devDependencies": {
