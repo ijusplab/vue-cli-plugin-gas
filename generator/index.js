@@ -1,68 +1,54 @@
 const camelCase = require('camelcase');
-const updaters = require('../utils/fileUpdaters');
-const { updateFile } = require('../utils/fileHelpers');
 const getPackageExtension = require('../utils/getPackageExtension');
-const clasp = require('../utils/clasp');
+const { Installer } = require('../utils/claspHelpers');
+const FileUpdater = require('../utils/fileUpdater');
+const { info } = require('../utils/logHelpers');
 
 module.exports = (api, options) => {
 
-    const packageName = api.generator.pkg.name;
-    options.appName = camelCase(packageName, { pascalCase: true });
+  const packageName = api.generator.pkg.name;
+  options.appName = camelCase(packageName, { pascalCase: true });
 
-    api.extendPackage(getPackageExtension(api, options));
+  api.extendPackage(getPackageExtension(api, options));
 
-    api.render('./templates');
+  api.render('./templates');
 
-    api.postProcessFiles(files => {
+  api.postProcessFiles(files => {
 
-        const { addLicense } = options;
-        const usesTypescript = api.hasPlugin('typescript');
-        const usesEslint = api.hasPlugin('eslint');
-    
-        console.log('📝 Changing files...');
+    const { addLicense } = options;
+    const usesTypescript = api.hasPlugin('typescript');
+    const usesEslint = api.hasPlugin('eslint');
 
-        if (usesTypescript) {
-            delete files['src/server/ErrorHandler.js'];
-            delete files['src/server/Service.js'];
-        } else {
-            delete files['src/server/ErrorHandler.ts'];
-            delete files['src/server/Service.ts'];
-        }
+    info('📝 Changing files...');
 
-        const items = {
-            entryFile: api.entryFile,
-            vueComponent: 'src/components/HelloWorld.vue',
-            envFile: '.env',
-            eslintrcFile: usesEslint ? 'src/server/.eslintrc.json' : false,
-            eslintignoreFile : usesEslint ? '.eslintignore' : false,
-            licenseFile: addLicense ? 'LICENSE' : false,
-            gitignoreFile: '.gitignore',
-            indexFile: 'public/index.html',
-            readme: 'README.md',
-            vuetifyPluginFile: usesTypescript && 'src/plugins/vuetify.ts' in files ? 'src/plugins/vuetify.ts' : false
-        };
+    const updater = new FileUpdater(api, options, files);
 
-        Object.keys(items).forEach(updater => {
-            if (items[updater]) updateFile(files, items[updater], content => updaters[updater](content, api, options));
-        });
+    updater.delete([
+      usesTypescript ? 'src/server/ErrorHandler.js' : 'src/server/ErrorHandler.ts',
+      usesTypescript ? 'src/server/Service.js' : 'src/server/Service.ts'
+    ]);
+
+    updater.update({
+      entryFile: api.entryFile,
+      vueComponent: 'src/components/HelloWorld.vue',
+      envFile: '.env',
+      eslintrcFile: usesEslint ? 'src/server/.eslintrc.json' : false,
+      eslintignoreFile: usesEslint ? '.eslintignore' : false,
+      licenseFile: addLicense ? 'LICENSE' : false,
+      gitignoreFile: '.gitignore',
+      indexFile: 'public/index.html',
+      readme: 'README.md',
+      vuetifyPluginFile: usesTypescript && 'src/plugins/vuetify.ts' in files ? 'src/plugins/vuetify.ts' : false,
+      google: 'src/google.mock/google.js'
     });
 
-    api.onCreateComplete(() => {
+  });
 
-        const { appName, createScript } = options;
-        const { login, create, clone, pull, updateManifest, updateConfig } = clasp;
+  api.onCreateComplete(() => {
 
-        login(api, options);
-        if (createScript) { create(api, options); } else { clone(api, options); }
-        pull(api, options);
-        const manifest = updateManifest(api, options);
-        const config = updateConfig(api, options);
+    const installer = new Installer(api, options);
+    api.exitLog(installer.setup());
+    installer.open();
 
-        api.exitLog(`Succesfully setup project '${appName}' with the following attributes:`);
-        Object.keys(config).forEach(key => {
-            api.exitLog(`${key}: ${config[key]}`);
-        });
-        api.exitLog('manifest: \n' + JSON.stringify(manifest, null, 4));
-
-    });
+  });
 }

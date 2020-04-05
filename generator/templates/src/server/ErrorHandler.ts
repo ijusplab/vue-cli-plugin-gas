@@ -3,12 +3,15 @@
 
 'use strict';
 
+interface IError {
+  message: string;
+  stack: string;
+}
+
 function log(payload: string) {
-  console.log('*** DEBUG_LOG');
   console.log(payload);
 }
 
-function errorHandler(payload: string) {
-  let err = new Error(JSON.parse(payload));
-  console.log(err);
+function errorHandler(payload: IError) {
+  console.error('%s\n%s', payload.message, payload.stack);
 }

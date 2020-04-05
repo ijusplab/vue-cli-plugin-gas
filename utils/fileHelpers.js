@@ -1,31 +1,80 @@
-// adapted from https://github.com/David-Desmaisons/vue-cli-plugin-component, under MIT License, Copyright (c) 2017-2018 David Desmaisons    
+const { existsSync, mkdirSync, lstatSync, readdirSync, readFileSync, writeFileSync, unlinkSync } = require('fs');
+const path = require('path');
+const { warn } = require('./logHelpers');
 
-const rename = (files, oldName, newName) => {
-    files[newName] = files[oldName];
-    delete files[oldName];
+const mkdir = (dir) => {
+  if (!existsSync(dir)) mkdirSync(dir);
 };
 
-const renameFiles = (files, regex, replace, filter = ((file) => false)) => {
-    for (const file in files) {
-        if (!regex.test(file) || filter(file)) {
-            continue;
-        }
-        const migratedFile = file.replace(regex, replace);
-        rename(files, file, migratedFile)
-    }
+const clearDir = (dir) => {
+  readdirSync(dir).forEach(file => {
+    unlinkSync(path.join(dir, file));
+  });
 };
 
-const updateFile = (files, name, updater) => {
-    let fileContent = files[name];
-    if (!fileContent) {
-        fileContent = '\n ';
-        console.warn(`File not found ${name}. Had to create it.`)
+const moveFiles = (src, dest, filter) => {
+  if (lstatSync(src).isDirectory()) {
+    readdirSync(src).forEach(item => {
+      moveFiles(path.join(src, item), dest, filter);
+    })
+  } else {
+    if (!filter || filter(src)) {
+      writeFileSync(path.join(dest, path.basename(src)), readFileSync(src, { encoding: 'utf-8' }));
+      unlinkSync(src);
     }
-    files[name] = updater(fileContent);
+  }
+};
+
+const copyFiles = (src, dest, filter) => {
+  if (lstatSync(src).isDirectory()) {
+    readdirSync(src).forEach(item => {
+      moveFiles(path.join(src, item), dest, filter);
+    })
+  } else {
+    if (!filter || filter(src)) {
+      writeFileSync(path.join(dest, path.basename(src)), readFileSync(src, { encoding: 'utf-8' }));
+    }
+  }
+};
+
+const deleteFiles = (fullPath, filter) => {
+  if (!existsSync(fullPath)) return;
+  if (lstatSync(fullPath).isDirectory()) {
+    readdirSync(fullPath).forEach(item => {
+      removeFiles(path.join(fullPath, item), filter);
+    })
+  } else {
+    if (!filter || filter(fullPath)) {
+      unlinkSync(fullPath);
+    }
+  }
+};
+
+const getJson = (fullPath) => {
+  if (!/\.json$/.test(fullPath)) {
+    throw new Error(`${path.basename(fullPath)} is not a json file`);
+  };
+  if (existsSync(fullPath)) {
+    return JSON.parse(readFileSync(fullPath, { encoding: 'utf-8' }));
+  } else {
+    warn(`File '${path.basename(fullPath)}' not found.`);
+    return null;
+  }
+};
+
+const setJson = (fullPath, contentAsObject) => {
+  if (!/\.json$/.test(fullPath)) {
+    throw new Error(`${path.basename(fullPath)} is not a json file`);
+  };
+  writeFileSync(fullPath, JSON.stringify(contentAsObject, null, 2));
 };
 
 module.exports = {
-    rename,
-    renameFiles,
-    updateFile
+  mkdir,
+  clearDir,
+  moveFiles,
+  copyFiles,
+  deleteFiles,
+  getJson,
+  setJson
 }
