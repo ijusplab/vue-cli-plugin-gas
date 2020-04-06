@@ -1,6 +1,6 @@
 const licensesInformation = require('spdx-license-list/spdx-simple.json')
 const locales = require('./utils/locales');
-const ct = require('countries-and-timezones');
+const { regions, timezones, defaultTimezone } = require('./utils/timezoneHelpers');
 
 const licenses = licensesInformation.map(name => ({
   name,
@@ -12,10 +12,7 @@ const scriptTypes = ['standalone', 'docs', 'sheets', 'slides', 'forms', 'webapp'
   value: name
 }));
 
-const timezones = Object.keys(ct.getAllTimezones()).map(name => ({
-  name,
-  value: name
-}));
+let defTimezone = 'Etc/GMT';
 
 module.exports = [
   {
@@ -52,12 +49,23 @@ module.exports = [
   },
   {
     type: 'list',
-    name: 'timeZone',
+    name: 'region',
     when: answer => answer.createScript,
-    message: 'Select timezone',
-    choices: timezones,
-    default: 'Etc/GMT',
-    group: 'Clasp'
+    message: 'Select a region',
+    validate: input => !!input,
+    default: defaultTimezone.replace(/\/.+$/, ''),
+    choices: regions,
+    pageSize: 10
+  },
+  {
+    type: 'list',
+    name: 'timeZone',
+    when: answer => answer.createScript && answer.region,
+    message: 'Select a timezone',
+    validate: input => !!input,
+    default: defaultTimezone,
+    choices: answers => timezones(answers.region),
+    pageSize: 10,
   },
   {
     type: 'confirm',

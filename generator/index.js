@@ -38,10 +38,8 @@ module.exports = (api, options) => {
       gitignoreFile: '.gitignore',
       indexFile: 'public/index.html',
       readme: 'README.md',
-      vuetifyPluginFile: usesTypescript && 'src/plugins/vuetify.ts' in files ? 'src/plugins/vuetify.ts' : false,
-      google: 'src/google.mock/google.js'
+      vuetifyPluginFile: usesTypescript && 'src/plugins/vuetify.ts' in files ? 'src/plugins/vuetify.ts' : false
     });
-
   });
 
   api.onCreateComplete(() => {

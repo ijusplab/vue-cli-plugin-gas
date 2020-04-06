@@ -2,7 +2,7 @@
 
 This is a Vue CLI plugin that will help you to setup a Google Apps Script project using [Vue](https://vuejs.org/) as the front-end tool. The plugin already integrates [clasp](https://github.com/google/clasp/) commands. For example, it will initialize your project by executing `clasp clone` or `clasp create`. It will also enable you to bundle and deploy your code by automatically syncing the manifest file, building your code for production to the `dist` folder and running `clasp push` or `clasp deploy`.
 
-This plugins expects you to have at least version `2.3.0` of Clasp installed.  
+This plugins expects you to have at least version `2.3.0` of Clasp installed. 
 
 ### Setup:
 
@@ -42,11 +42,11 @@ All your calls to methods in `google.script.history`, `google.script.host` and `
 
 The `google` global object will be available in the Vue instance as `$google`. Thus, the right way to invoke `google.script.run` inside your components is by calling `this.$google.script.run`.
 
-The Vue instance will also have the boolean property `$devMode`, which will be true when `process.env.NODE_ENV !== 'production'`, as well as three custom methods: `$callLibrary`, `$log` and `$errorHandler`, which are intended to work together with the `callback`, `log` and `errorHandler` server-side functions. 
+The Vue instance will also have the boolean property `$devMode`, which will be true when `process.env.NODE_ENV !== 'production'`, as well as three custom methods: `$callLibraryMethod`, `$log` and `$errorHandler`, which are intended to work together with the `callback`, `log` and `errorHandler` server-side functions. 
 
-The first of these methods is useful to call methods of libraries you use as dependencies in your server-side code. You should pass to it a object with the following properties: `library:string`, `method:string` and `args:array`. It returns a `Promise`.
+The first of these methods is useful to call methods of libraries you use as dependencies in your server-side code or of any other global namespace. You should pass to it the following parameters: `library:string`, `method:string` and `args:array`. It returns a `Promise`.
 
-The `$log` and `$errorHandler` methods are useful if you want to send client-side debug messages or errors to the Stackdriver Logging console.
+The `$log` and `$errorHandler` methods are useful if you want to send client-side debug messages or errors to the Stackdriver Logging console. They don't have return values. 
 
 > IMPORTANT: The `$log` method does not work in production.
 
@@ -60,6 +60,7 @@ The plugin introduces five new commands to the vue-cli-service: `deploy`, `login
 
 | command | description | options |
 | ------ | ------------ | ------- |
+| `change-timezone` | Syncs manifest file and changes timezone in local manifest. | - | 
 | `deploy` | Syncs manifest file, builds for production and pushes the output to Google Drive under a new version. Runs part of `syncmanifest`, `vu-cli-service build`, `clasp push` and `clasp deploy` behind the scenes. | <nobr>`--description`</nobr> | 
 | `login` | Checks if you are already authenticated with Google and authenticates you if you are not. | - |
 | `pull` | Pulls all remote files and places them into the local `dist` folder. Runs `clasp pull` behind the scenes. | - |
@@ -76,12 +77,13 @@ The plugin introduces five new commands to the vue-cli-service: `deploy`, `login
 /* 
   usage:
 */
-vue-cli-service login // or npx vue-cli-service login
-vue-cli-service syncmanifest // or npx vue-cli-service syncmanifest
-vue-cli-service pull // or npx vue-cli-service pull
-vue-cli-service push // or npx vue-cli-service push
+vue-cli-service change-timezone // or npx vue-cli-service change-timezone
 vue-cli-service deploy // or npx vue-cli-service deploy
 vue-cli-service deploy --description "This is a new version" // or npx vue-cli-service deploy --description "This is a new version"
+vue-cli-service login // or npx vue-cli-service login
+vue-cli-service pull // or npx vue-cli-service pull
+vue-cli-service push // or npx vue-cli-service push
+vue-cli-service syncmanifest // or npx vue-cli-service syncmanifest
 ```
 
 By tweeking the `scripts` property of your `package.json` file you may combine these new commands among themselves and with Vue CLI natives `serve` and `build`. 
@@ -91,7 +93,8 @@ By tweeking the `scripts` property of your `package.json` file you may combine t
 This plugin already adds the following scripts to your project's `package.json`:
 
 | script | commands executed | description |
-| ------ | ---------------- | ----------- |
+| ------ | ----------------- | ----------- |
+| `change-timezone` | `vue-cli-service change-timezone` | changes timezone in local manifest | - | 
 | `deploy` | `vue-cli-service deploy` | builds for production and pushes the output to Google Drive under a new version (accepts the `--description` option) | 
 | `inspect` | `vue-cli-service inspect --mode development > wp.dev.output.js && vue-cli-service inspect --mode production > wp.prod.output.js` | pipes development and production webpack configurations into the files `wp.dev.output.js` and `wp.prod.output.js` |
 | `pull` | `vue-cli-service pull` | pulls all remote files and places them into the local `dist` folder (**_it will not update source code_**) |
@@ -111,6 +114,7 @@ The `wp.dev.output.js` and `wp.prod.output.js` files produced by the `inspect` s
 /* 
   usage:
 */
+npm run change-timezone // or yarn change-timezone
 npm run deploy // or yarn deploy
 npm run deploy --description "This is a new version" // or yarn deploy --description "This is a new version" 
 npm run inspect // or yarn inspect

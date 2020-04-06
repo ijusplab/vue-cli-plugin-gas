@@ -16,7 +16,7 @@ const merge = (...arguments) => {
   let target = {};
   let merger = (obj) => {
     for (let prop in obj) {
-      if (obj.hasOwnProperty(prop)) {
+      if (obj.hasOwnProperty(prop) && obj[prop] !== null && obj[prop] !== undefined) {
         if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
           target[prop] = merge(target[prop], obj[prop]);
         } else {
@@ -77,7 +77,7 @@ const create = (context, { scriptType, appName }) => {
 
 const clone = (context, { scriptId }) => {
   if (!scriptId) throw new Error('ScriptId not defined');
-  execSync(`cd ${context.dist} && cd .. && clasp clone "${this.scriptId}" --rootDir ./dist`, { stdio: 'inherit' });
+  execSync(`cd ${context.dist} && cd .. && clasp clone "${scriptId}" --rootDir ./dist`, { stdio: 'inherit' });
 };
 
 const setManifest = (context, data) => {
@@ -92,6 +92,11 @@ const updateManifest = (context, data) => {
   manifest = merge(manifest, local);
   if (data) manifest = merge(manifest, data);
   setJson(context.manifest.local, manifest);
+};
+
+const getTimeZone = (context) => {
+  let manifest = getJson(context.manifest.local) || {};
+  return manifest.timeZone ? manifest.timeZone : null;
 };
 
 const updateConfig = (context) => {
@@ -132,6 +137,7 @@ const authenticate = () => {
 
 const setProject = (context, { createScript, scriptId, scriptType, appName }) => {  
   info('⚙️ Setting up project with Clasp...');
+  clearDir(context.dist);
   if (createScript) {
     info('📝 Creating new script...');
     create(context, { scriptType, appName });
@@ -141,12 +147,16 @@ const setProject = (context, { createScript, scriptId, scriptType, appName }) =>
   }
 };
 
-const adjustSettings = (context, { timeZone }) => {
+const adjustSettings = (context, { timeZone, createScript }) => {
   info('⚙️ Adjusting Clasp settings...');
   claspNative('pull');
-  setManifest(context, { timeZone });
-  copyFiles(context.manifest.local, context.dist);
-  claspNative('push', '--force');
+  if (createScript) {
+    setManifest(context, { timeZone });
+    copyFiles(context.manifest.local, context.dist);
+    claspNative('push', '--force');
+  } else {
+    copyFiles(context.manifest.remote, context.server);
+  }
   clearDir(context.dist);
   updateConfig(context);
 };
@@ -157,7 +167,7 @@ const setup = (context, { appName, createScript, scriptType, scriptId, timeZone 
   deleteFiles(context.config); // delete .clasp.json if it exists
   authenticate();
   setProject(context, { createScript, scriptId, scriptType, appName });
-  adjustSettings(context, { timeZone });
+  adjustSettings(context, { timeZone, createScript });
 
   return `👏🏽 Project '${appName}' succesfully created.`;
 };
@@ -200,7 +210,11 @@ class Service {
   }
 
   updateManifest(data) {
-    return updateManifest(this.context, data);
+    updateManifest(this.context, data);
+  }
+
+  getTimeZone() {
+    return getTimeZone(this.context);
   }
 
   updateLocalFiles() {

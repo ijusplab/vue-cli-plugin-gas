@@ -7,7 +7,7 @@ export default {
     Vue.prototype.$google = google
     Vue.prototype.$devMode = devMode
   
-    Vue.prototype.$callLibrary = (library, method, ...args) => {
+    Vue.prototype.$callLibraryMethod = (library, method, ...args) => {
       return new Promise((resolve, reject) => {
         google.script.run
           .withSuccessHandler(res => resolve(res))

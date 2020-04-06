@@ -1,6 +1,3 @@
-/* eslint-disable */
-const methods = require ('./methods.json');
-
 const getParamsString = (params) => {
   if (params === null || params === undefined)
     return '';
@@ -62,25 +59,42 @@ const host = {
   }
 };
 
+const enableServerMockedMethods = (obj) => {
+  return new Proxy(obj, {
+    get(target, key) {
+      if (key in target) {
+        return target[key];
+      } else if (typeof target.__mockedMethod__ === "function") {
+        return function(...args) {
+          return target.__mockedMethod__.call(target, key, args);
+        };
+      }
+    }
+  });
+}
+
 class Runner {
-  static withFailureHandler(fn) {
+  constructor() {
+    return enableServerMockedMethods(this);
+  }
+  withFailureHandler(fn) {
+    if (typeof fn !== 'function') throw new Error('You have to pass a function to withFailureHandler.')
     this.failureHandler = fn;
     return this;
   }
-  static withSuccessHandler(fn) {
+  withSuccessHandler(fn) {
+    if (typeof fn !== 'function') throw new Error('You have to pass a function to withSuccessHandler.')
     this.successHandler = fn;
     return this;
   }
-  static withUserObject(obj) {
+  withUserObject(obj) {
+    if (typeof fn !== 'object') throw new Error('You have to pass an object to withUserObject.')
     this.userObject = obj;
     return this;
   }
-}
-
-methods.forEach(method => {
-  // eslint-disable-next-line no-unused-vars
-  Runner[method] = function(args) {
-    console.log(`In production, this would have run the server-side ${method} method...`);
+  __mockedMethod__(name) {
+    const style = 'color: white; font-style: bold; background-color: #0277BD; padding: 2px 5px; border-radius: 3px;'
+    console.info(`In production, you would have called the server-side %c${name} method`, style);
     if (this.successHandler) {
       this.successHandler('in case of success it would respond within the successHandler callback, with the following user object:', this.userObject);
     }
@@ -88,8 +102,7 @@ methods.forEach(method => {
       this.failureHandler('in case of failure it would respond within the failureHandler callback, with the following user object:', this.userObject);
     }
   }
-  .bind(Runner);
-})
+}
 
 const url = {
   getLocation(fn) {
@@ -101,11 +114,20 @@ const url = {
   }
 };
 
-module.exports = {
-  script: {
-    history,
-    host,
-    run: Runner,
-    url
+class GoogleMock {
+  constructor() {
+    if (!!GoogleMock.instance) {
+      return GoogleMock.instance;
+    }
+    GoogleMock.instance = this;
+    this.history = history;
+    this.host = host;
+    this.url = url;
+    this.run = new Runner();
+    return this;
   }
+}
+
+export default {
+  script: new GoogleMock()
 }

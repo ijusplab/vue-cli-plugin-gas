@@ -1,10 +1,10 @@
-const ts2gas = require('ts2gas');
 const path = require('path');
+const ts2gas = require('ts2gas');
 const getCDNModules = require('./utils/getCDNModules');
-const { Service } = require('./utils/claspHelpers');
 const CustomWebpackPlugin = require('./utils/CustomWebpackPlugin');
-const updateMethodsList = require('./utils/updateMethodsList');
+const { Service } = require('./utils/claspHelpers');
 const { info } = require('./utils/logHelpers');
+const { timezoneChanger } = require('./utils/timezoneHelpers');
 
 const injectEnvironment = content => {
   return Object.keys(process.env).reduce((result, key) => {
@@ -44,7 +44,7 @@ module.exports = (api, options) => {
     };
 
     config
-      .devtool(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'custom-watch' ? 'none' : 'eval-source-map')
+      .devtool(process.env.NODE_ENV === 'production' ? 'none' : 'eval')
       .plugin('copy')
       .use(require('copy-webpack-plugin'), [
         [
@@ -88,14 +88,6 @@ module.exports = (api, options) => {
         }
       ]);
 
-    if (process.env.NODE_ENV === 'development' && process.env.VUE_APP_WATCH_MODE !== 'true') {
-      config.plugin('custom-plugin')
-        .use(CustomWebpackPlugin, [{
-          hook: 'watchRun',
-          callback: () => updateMethodsList(api.resolve('src'))
-        }]);
-    }
-
     if (process.env.NODE_ENV === 'development' && process.env.VUE_APP_WATCH_MODE === 'true') {
       config.plugin('custom-plugin')
         .use(CustomWebpackPlugin, [{
@@ -103,7 +95,7 @@ module.exports = (api, options) => {
           callback: () => service.push('--force')
         }]);
     }
-
+    
   });
 
   api.registerCommand('pull',
@@ -200,6 +192,21 @@ module.exports = (api, options) => {
     }
   );
 
+  api.registerCommand('change-timezone',
+    {
+      description: 'Changes timezone in the script\'s local manifest (to update remote manifest you will have to use push or deploy)',
+      usage: 'vue-cli-service change-timezone'
+    },
+    args => {
+      timezoneChanger(service.getTimeZone()).then(({ timeZone }) => {
+        info('\nUpdating local manifest file...\n');
+        service.pull();
+        service.updateManifest({ timeZone });
+        service.clearDist();
+      })
+    }
+  );
+
 }
 
 module.exports.defaultModes = {
@@ -207,5 +214,6 @@ module.exports.defaultModes = {
   pull: 'development',
   push: 'development',
   watch: 'development',
-  syncmanifest: 'development'
+  syncmanifest: 'development',
+  'change-timezone': 'development'
 }

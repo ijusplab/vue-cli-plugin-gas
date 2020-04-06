@@ -17,17 +17,21 @@ module.exports = (api, { addLicense, licenseName }) => {
       },
       configureWebpack: config => {
         config.watchOptions = {
-          ignored: /src\/google\.mock/,
+          ignored: /node_modules/,
           aggregateTimeout: 1000            
         };
         config.devServer = {
           watchOptions: {
-            ignored: /src\/google\.mock/
+            ignored: /node_modules/
+          },
+          before: function (app, server, compiler) {
+            let googleMock = '@ijusplab/vue-cli-plugin-gas/utils/google.mock'
+            if (googleMock in config.externals) delete config.externals[googleMock]
           }
         };
         config.optimization = {
           splitChunks: false,
-          minimize: process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'custom-watch'
+          minimize: process.env.NODE_ENV === 'production'
         };
         config.externals = {
           'vue': 'Vue',
@@ -35,7 +39,7 @@ module.exports = (api, { addLicense, licenseName }) => {
           'vue-router': 'VueRouter',
           'vuetify/dist/vuetify.min.css': 'undefined',
           'vuetify/lib': 'Vuetify',
-          './google.mock/google': 'google'
+          '@ijusplab/vue-cli-plugin-gas/utils/google.mock': 'google'
         };
       },
       chainWebpack: config => {
@@ -60,6 +64,7 @@ module.exports = (api, { addLicense, licenseName }) => {
       }
     },
     scripts: {
+      "change-timezone": "vue-cli-service change-timezone",
       "deploy": "vue-cli-service deploy",
       "push": "vue-cli-service push",
       "pull": "vue-cli-service pull",

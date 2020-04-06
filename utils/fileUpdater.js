@@ -12,7 +12,7 @@ const updaters = (api, options) => {
     const lines = content.split(/\r?\n/g);
 
     lines[0] = [
-      `import google from './google.mock/google'`,
+      `import google from '@ijusplab/vue-cli-plugin-gas/utils/google.mock'`,
       `import VueGasPlugin from '@ijusplab/vue-cli-plugin-gas/utils/VueGasPlugin'`,
       lines[0]
     ].join('\n');
@@ -176,19 +176,6 @@ const updaters = (api, options) => {
     return lines.join('\n');
   }
 
-  const google = (content) => {
-
-    const lines = content.split(/\r?\n/g);
-
-    let lineIndex = lines.findIndex(line => line.match(/import\s+methods/));
-    lines[lineIndex] = `import methods from './methods.json';`;
-
-    lineIndex = lines.findIndex(line => line.match(/module\.exports/));
-    lines[lineIndex] = 'export default {';
-
-    return lines.join('\n');
-  };
-
   return {
     entryFile,
     vueComponent,
@@ -199,8 +186,7 @@ const updaters = (api, options) => {
     gitignoreFile,
     indexFile,
     readme,
-    vuetifyPluginFile,
-    google
+    vuetifyPluginFile
   }
 };
 
