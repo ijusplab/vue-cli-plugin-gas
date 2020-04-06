@@ -8,9 +8,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/ijusplab/incubadora/vue-cli-plugin-gas.git"
+    "url": "git+https://github.com/ijusplab/vue-cli-plugin-gas.git"
   },
-  "homepage": "https://gitlab.com/ijusplab/incubadora/vue-cli-plugin-gas#readme",
+  "homepage": "https://github.com/ijusplab/vue-cli-plugin-gas.git#readme",
   "keywords": [
     "vue",
     "plugin",
@@ -22,7 +22,7 @@
   "author": "caio.moyses.lima@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/ijusplab/incubadora/vue-cli-plugin-gas/issues"
+    "url": "https://github.com/ijusplab/vue-cli-plugin-gas/issues"
   },
   "dependencies": {
     "camelcase": "^5.3.1",
