@@ -12,7 +12,7 @@ const updaters = (api, options) => {
     const lines = content.split(/\r?\n/g);
 
     lines[0] = [
-      `import google from '@ijusplab/vue-cli-plugin-gas/utils/google.mock'`,
+      `import google from '@ijusplab/vue-cli-plugin-gas/google.mock'`,
       `import VueGasPlugin from '@ijusplab/vue-cli-plugin-gas/utils/VueGasPlugin'`,
       lines[0]
     ].join('\n');

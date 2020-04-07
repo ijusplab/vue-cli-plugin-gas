@@ -149,7 +149,6 @@ const setProject = (context, { createScript, scriptId, scriptType, appName }) =>
 
 const adjustSettings = (context, { timeZone, createScript }) => {
   info('⚙️ Adjusting Clasp settings...');
-  claspNative('pull');
   if (createScript) {
     setManifest(context, { timeZone });
     copyFiles(context.manifest.local, context.dist);

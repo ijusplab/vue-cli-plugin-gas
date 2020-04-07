@@ -6,9 +6,8 @@ replace:
 ---
 
 <%# REPLACE %>
-
-    <div style="display: flex; align-items: center; justify-content: center;">
-      <input type="button" value="test $log method" @click="handler">
+    <div style="display: flex; align-items: center; justify-content: center; margin: 10px;">
+      <input type="button" style="margin: 10px; padding: 5px 10px; background-color: #BDBDBD; color: #212121;" value="click to test $log method" @click="handler">
     </div>
   </div>
 </template>
