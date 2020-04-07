@@ -34,6 +34,7 @@ const merge = (...arguments) => {
 const getPaths = (api) => {
   mkdir(api.resolve('dist'));
   return {
+    root: path.resolve(api.resolve('src'), '..'),
     src: api.resolve('src'),
     dist: api.resolve('dist'),
     server: path.join(api.resolve('src'), 'server'),
@@ -65,19 +66,19 @@ const isLogged = () => {
   return user.length > 0 ? user : false;
 };
 
-const claspNative = (command, options) => {
-  execSync(`clasp ${command}` + (options ? ` ${options}` : ''), { stdio: 'inherit' });
+const claspNative = (command, options, context) => {
+  execSync(`cd ${context.root} && clasp ${command}` + (options ? ` ${options}` : ''), { stdio: 'inherit' });
 }
 
 const create = (context, { scriptType, appName }) => {
   if (!scriptType) throw new Error('ScriptType not defined');
   if (!appName) throw new Error('AppName not defined');
-  execSync(`cd ${context.dist} && cd .. && clasp create --type ${scriptType} --title "${appName}" --rootDir ./dist`, { stdio: 'inherit' });
+  execSync(`cd ${context.root} && clasp create --type ${scriptType} --title "${appName}" --rootDir ./dist`, { stdio: 'inherit' });
 };
 
 const clone = (context, { scriptId }) => {
   if (!scriptId) throw new Error('ScriptId not defined');
-  execSync(`cd ${context.dist} && cd .. && clasp clone "${scriptId}" --rootDir ./dist`, { stdio: 'inherit' });
+  execSync(`cd ${context.root} && clasp clone "${scriptId}" --rootDir ./dist`, { stdio: 'inherit' });
 };
 
 const setManifest = (context, data) => {
@@ -124,14 +125,14 @@ const checkVersion = () => {
   }
 };
 
-const authenticate = () => {
+const authenticate = (context) => {
   let user = isLogged();
   if (user) {
     info(`🔑 Already logged in Clasp as ${user}`);
     return user;
   }
   info('🔑 Launching clasp login...');
-  claspNative('login');
+  claspNative('login', null, context);
   return isLogged();
 };
 
@@ -152,7 +153,7 @@ const adjustSettings = (context, { timeZone, createScript }) => {
   if (createScript) {
     setManifest(context, { timeZone });
     copyFiles(context.manifest.local, context.dist);
-    claspNative('push', '--force');
+    claspNative('push', '--force', context);
   } else {
     copyFiles(context.manifest.remote, context.server);
   }
@@ -164,7 +165,7 @@ const setup = (context, { appName, createScript, scriptType, scriptId, timeZone 
 
   checkVersion();
   deleteFiles(context.config); // delete .clasp.json if it exists
-  authenticate();
+  authenticate(context);
   setProject(context, { createScript, scriptId, scriptType, appName });
   adjustSettings(context, { timeZone, createScript });
 
@@ -176,7 +177,7 @@ class Installer {
   constructor(api, options) {
     this.context = getPaths(api);
     this.setup = () => setup(this.context, options);
-    this.open = () => claspNative('open');
+    this.open = () => claspNative('open', null, this.context);
   }
 }
 
@@ -193,19 +194,19 @@ class Service {
   }
 
   claspNative(command, options) {
-    return claspNative(command, options);
+    return claspNative(command, options, this.context);
   }
 
   push(options) {
-    return claspNative('push', options);
+    return claspNative('push', options, this.context);
   }
 
   pull(options) {
-    return claspNative('pull', options);
+    return claspNative('pull', options, this.context);
   }
 
   deploy(options) {
-    return claspNative('deploy', options);
+    return claspNative('deploy', options, this.context);
   }
 
   updateManifest(data) {
