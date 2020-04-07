@@ -24,10 +24,10 @@ module.exports = (api, { addLicense, licenseName }) => {
           watchOptions: {
             ignored: /node_modules/
           },
-          // before: function (app, server, compiler) {
-          //   let googleMock = '@ijusplab/vue-cli-plugin-gas/utils/google.mock'
-          //   if (googleMock in config.externals) delete config.externals[googleMock]
-          // }
+          before: function (app, server, compiler) {
+            let googleMock = '@ijusplab/vue-cli-plugin-gas/google.mock'
+            if (googleMock in config.externals) delete config.externals[googleMock]
+          }
         };
         config.optimization = {
           splitChunks: false,
