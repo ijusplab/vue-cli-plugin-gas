@@ -20,7 +20,6 @@ const updaters = (api, options) => {
     if (usesTypescript && usesEslint) {
       lines[0] = [
         '/* eslint-disable  @typescript-eslint/ban-ts-ignore */',
-        '/* eslint-disable  @typescript-eslint/no-explicit-any */',
         '',
         lines[0]
       ].join('\n');
@@ -176,6 +175,17 @@ const updaters = (api, options) => {
     return lines.join('\n');
   }
 
+  const tsConfig = (content) => {
+
+    const tsConfigObj = JSON.parse(content);
+    if (!tsConfigObj.exclude) {
+        tsConfigObj.exclude = []
+    }
+    tsConfigObj.exclude.push('src/server/**/*.ts');
+
+    return JSON.stringify(tsConfigObj, null, 2);
+  }
+
   return {
     entryFile,
     vueComponent,
@@ -186,7 +196,8 @@ const updaters = (api, options) => {
     gitignoreFile,
     indexFile,
     readme,
-    vuetifyPluginFile
+    vuetifyPluginFile,
+    tsConfig
   }
 };
 
