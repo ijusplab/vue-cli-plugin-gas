@@ -178,7 +178,7 @@ const updaters = (api, options) => {
   const tsConfig = (content) => {
 
     const tsConfigObj = JSON.parse(content);
-    if (!tsConfigObj.exclude) {
+    if (!Array.isArray(tsConfigObj.exclude)) {
         tsConfigObj.exclude = []
     }
     tsConfigObj.exclude.push('src/server/**/*.ts');
