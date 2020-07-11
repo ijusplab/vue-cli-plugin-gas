@@ -21,7 +21,7 @@ interface IGetEvent {
 
 function doGet(e: IGetEvent) {
   //@ts-ignore
-  var html = HtmlService.createTemplateFromFile('_index');
+  var html = HtmlService.createTemplateFromFile('index');
   return html.evaluate()
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     //@ts-ignore
