@@ -98,9 +98,6 @@ class Runner {
     if (this.successHandler) {
       this.successHandler('in case of success it would respond within the successHandler callback, with the following user object:', this.userObject);
     }
-    if (this.failureHandler) {
-      this.failureHandler('in case of failure it would respond within the failureHandler callback, with the following user object:', this.userObject);
-    }
   }
 }
 
