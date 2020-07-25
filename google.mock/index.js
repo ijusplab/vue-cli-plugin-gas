@@ -96,10 +96,9 @@ class Runner {
     const style = 'color: white; font-style: bold; background-color: #0277BD; padding: 2px 5px; border-radius: 3px;'
     console.info(`In production, you would have called the server-side %c${name} method`, style);
     if (this.successHandler) {
-      this.successHandler('in case of success it would respond within the successHandler callback, with the following user object:', this.userObject);
-    }
-    if (this.failureHandler) {
-      this.failureHandler('in case of failure it would respond within the failureHandler callback, with the following user object:', this.userObject);
+      setTimeout(() => {
+          this.successHandler('in case of success it would respond within the successHandler callback, with the following user object:', this.userObject);
+      }, 0);
     }
   }
 }
