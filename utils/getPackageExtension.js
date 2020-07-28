@@ -27,6 +27,8 @@ module.exports = (api, { addLicense, licenseName }) => {
           before: function (app, server, compiler) {
             let googleMock = '@ijusplab/vue-cli-plugin-gas/google.mock'
             if (googleMock in config.externals) delete config.externals[googleMock]
+            let responseMoc = './mock-data/responseMock'
+            if (responseMoc in config.externals) delete config.externals[responseMoc]
           }
         };
         config.optimization = {
@@ -39,7 +41,8 @@ module.exports = (api, { addLicense, licenseName }) => {
           'vue-router': 'VueRouter',
           'vuetify/dist/vuetify.min.css': 'undefined',
           'vuetify/lib': 'Vuetify',
-          '@ijusplab/vue-cli-plugin-gas/google.mock': 'google'
+          '@ijusplab/vue-cli-plugin-gas/google.mock': 'google',
+          './mock-data/responseMock': 'undefined'
         };
       },
       chainWebpack: config => {

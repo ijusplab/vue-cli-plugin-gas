@@ -12,3 +12,7 @@ function doGet(e) {
 const callback = (library, method, ...args) => {
   return this[library][method].apply(this, args);
 }
+
+function sampleFunction() {
+  return 'This is product mode';
+}
