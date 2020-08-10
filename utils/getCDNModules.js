@@ -21,7 +21,7 @@ module.exports = (api) => {
   if (usesRouter) modules.push({
     name: 'vue-router',
     var: 'VueRouter',
-    path: 'dist/router.js'
+    path: 'dist/vue-router.js'
   });
 
   if (usesVuetify) modules.push({
