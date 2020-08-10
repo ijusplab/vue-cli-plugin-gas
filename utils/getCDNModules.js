@@ -19,9 +19,9 @@ module.exports = (api) => {
   });
 
   if (usesRouter) modules.push({
-    name: 'router',
-    var: 'Router',
-    path: 'dist/router.min.js'
+    name: 'vue-router',
+    var: 'VueRouter',
+    path: 'dist/router.js'
   });
 
   if (usesVuetify) modules.push({
