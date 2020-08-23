@@ -12,6 +12,8 @@ This plugins expects you to have at least version `2.3.0` of Clasp installed.
 npm -g install @google/clasp // or yarn global add @google/clasp
 ```
 
+> Important: Some developers have experienced an issue where they had clasp globally installed by still they got the `Clasp not installed` error message. They were able to solve the issue by simply installing clasp locally. Thanks to @gerboland and @barecool for bringing up this issue. 
+
 #### 2. Create your Vue Project
 
 ```javascript
