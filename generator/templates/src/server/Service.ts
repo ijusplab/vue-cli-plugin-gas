@@ -14,5 +14,5 @@ const callback = (library: string, method: string, ...args: any) => {
 }
 
 function sampleFunction(): string {
-  return 'This is product mode';
+  return 'This is production mode';
 }
