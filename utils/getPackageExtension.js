@@ -27,8 +27,6 @@ module.exports = (api, { addLicense, licenseName }) => {
           before: function (app, server, compiler) {
             let googleMock = '@ijusplab/vue-cli-plugin-gas/google.mock'
             if (googleMock in config.externals) delete config.externals[googleMock]
-            let responseMoc = './mock-data/responseMock'
-            if (responseMoc in config.externals) delete config.externals[responseMoc]
           }
         };
         config.optimization = {
@@ -41,8 +39,7 @@ module.exports = (api, { addLicense, licenseName }) => {
           'vue-router': 'VueRouter',
           'vuetify/dist/vuetify.min.css': 'undefined',
           'vuetify/lib': 'Vuetify',
-          '@ijusplab/vue-cli-plugin-gas/google.mock': 'google',
-          './mock-data/responseMock': 'undefined'
+          '@ijusplab/vue-cli-plugin-gas/google.mock': 'google'
         };
       },
       chainWebpack: config => {
@@ -60,6 +57,16 @@ module.exports = (api, { addLicense, licenseName }) => {
           .use('vue-svg-inline-loader')
           .loader('vue-svg-inline-loader')
           .options({ /* ... */ });
+
+        config.plugin('define').tap(definitions => {
+          if (process.env.NODE_ENV !== 'production') {
+            const mockFilePath = './src/mock-data/responseMock.js';
+            definitions[0] = Object.assign(definitions[0], {
+              __GOOGLE_MOCK_RESPONSES__: require('fs').existsSync(mockFilePath) ? require(mockFilePath) : null
+            });
+          }
+          return definitions;
+        });
 
         if (config.plugins.has('preload-app')) config.plugins.delete('preload-app');
         if (config.plugins.has('prefetch-app')) config.plugins.delete('prefetch-app');

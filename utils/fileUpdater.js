@@ -14,8 +14,6 @@ const updaters = (api, options) => {
     lines[0] = [
       `import google from '@ijusplab/vue-cli-plugin-gas/google.mock'`,
       `import VueGasPlugin from '@ijusplab/vue-cli-plugin-gas/utils/VueGasPlugin'`,
-      `// @ts-ignore`,
-      `import { sampleMockData } from './mock-data/responseMock'`,
       lines[0]
     ].join('\n');
 
@@ -35,10 +33,6 @@ const updaters = (api, options) => {
     lineIndex = lines.findIndex(line => line.match(/new Vue/));
     lines[lineIndex - 1] = [
       lines[lineIndex - 1],
-      `if (process.env.NODE_ENV !== 'production' && google.setMockData && sampleMockData) {`,
-      `  google.setMockData(sampleMockData);`,
-      `}`,
-      ``,
       `Vue.use(VueGasPlugin, {`,
       `  google,`,
       `  devMode: process.env.NODE_ENV !== 'production'`,

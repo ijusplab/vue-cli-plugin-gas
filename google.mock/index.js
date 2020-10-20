@@ -73,20 +73,20 @@ const enableServerMockedMethods = (obj) => {
   });
 }
 
-let responseMapping;
-
-const setMockData = (mockDataArr) => {
-  responseMapping = new Map();
-  if (!Array.isArray(mockDataArr)) {
-    throw new Error('You have to pass an array object to setMockData.');
+const initializeMockData = (mockData) => {
+  const mapper = new Map();
+  if (mockData) {
+    for (const functionName of Object.keys(mockData)) {
+      mapper.set(functionName, {
+        isSuccess: mockData[functionName].isSuccess ? true : false,
+        response: mockData[functionName].response
+      });
+    }
   }
-  for (const mock of mockDataArr) {
-    responseMapping.set(mock.funcName, {
-      isSuccess: mock.isSuccess ? true : false,
-      response: mock.response
-    });
-  }
+  return mapper;
 }
+
+const responseMapping = initializeMockData(__GOOGLE_MOCK_RESPONSES__);
 
 class Runner {
   constructor() {
@@ -161,6 +161,5 @@ class GoogleMock {
 }
 
 export default {
-  script: new GoogleMock(),
-  setMockData
+  script: new GoogleMock()
 }
