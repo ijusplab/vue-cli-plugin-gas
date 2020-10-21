@@ -58,6 +58,16 @@ module.exports = (api, { addLicense, licenseName }) => {
           .loader('vue-svg-inline-loader')
           .options({ /* ... */ });
 
+        config.plugin('define').tap(definitions => {
+          if (process.env.NODE_ENV !== 'production') {
+            const mockFilePath = './src/mock-data/responseMock.js';
+            definitions[0] = Object.assign(definitions[0], {
+              __GOOGLE_MOCK_RESPONSES__: require('fs').existsSync(mockFilePath) ? require(mockFilePath) : null
+            });
+          }
+          return definitions;
+        });
+
         if (config.plugins.has('preload-app')) config.plugins.delete('preload-app');
         if (config.plugins.has('prefetch-app')) config.plugins.delete('prefetch-app');
         if (config.plugins.has('VuetifyLoaderPlugin')) config.plugins.delete('VuetifyLoaderPlugin');

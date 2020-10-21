@@ -12,3 +12,7 @@ function doGet(e: GoogleAppsScript.Events.DoGet) {
 const callback = (library: string, method: string, ...args: any) => {
   return this[library][method].apply(this, args);
 }
+
+function sampleFunction(): string {
+  return 'This is production mode';
+}

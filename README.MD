@@ -44,6 +44,10 @@ All your calls to methods in `google.script.history`, `google.script.host` and `
 
 The `google` global object will be available in the Vue instance as `$google`. Thus, the right way to invoke `google.script.run` inside your components is by calling `this.$google.script.run`.
 
+In development, you can mock up the response of server-side functions. Seeing file (`./src/mock-data/responseMock.js`), you will find the example. You can specify mock data with JavaScript Object. The property name is server-side function name, and value is object which has two properties, `isSuccess` and `response`. If `isSuccess` is true, then `withSuccessHandler` will be invoked, if that is false, then `withFailureHandler` will be invoked. At that time, `response` will path as the first argument.
+
+> IMPORTANT: if the value is string, it must include actual quotes inside of the string itself.
+
 The Vue instance will also have the boolean property `$devMode`, which will be true when `process.env.NODE_ENV !== 'production'`, as well as three custom methods: `$callLibraryMethod`, `$log` and `$errorHandler`, which are intended to work together with the `callback`, `log` and `errorHandler` server-side functions. 
 
 The first of these methods is useful to call methods of libraries you use as dependencies in your server-side code or of any other global namespace. You should pass to it the following parameters: `library:string`, `method:string` and `args:array`. It returns a `Promise`.

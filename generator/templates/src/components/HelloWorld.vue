@@ -9,6 +9,7 @@ replace:
     <div style="display: flex; align-items: center; justify-content: center; margin: 10px;">
       <input type="button" style="margin: 10px; padding: 5px 10px; background-color: #BDBDBD; color: #212121;" value="click to test $log method" @click="handler">
     </div>
+    <div>{{ response }}</div>
   </div>
 </template>
 <%# END_REPLACE %>
@@ -18,7 +19,15 @@ replace:
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String
+    msg: String,
+    response: String
+  },
+  mounted() {
+    this.$google.script.run
+      .withSuccessHandler((response) => {
+        this.response = response;
+      })
+      .sampleFunction();
   },
   methods: {
     handler() {
