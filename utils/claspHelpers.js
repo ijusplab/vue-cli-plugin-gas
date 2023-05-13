@@ -52,8 +52,8 @@ const isInstalled = () => {
   try {
     const raw = getJson(require.resolve('@google/clasp/package.json')).version;
     let [major, minor, patch] = raw.split('.').map(n => parseInt(n, 10));
-    let min = '2.3.0';
-    let isCompatible = major > 2 || (major === 2 && minor >= 3);
+    let min = '2.4.1';
+    let isCompatible = major > 2 || (major === 2 && minor >= 4 && patch >= 1 );
     return { major, minor, patch, raw, min, isCompatible };
   } catch (e) {
     console.error(e);
@@ -74,6 +74,7 @@ const create = (context, { scriptType, appName }) => {
   if (!scriptType) throw new Error('ScriptType not defined');
   if (!appName) throw new Error('AppName not defined');
   execSync(`cd ${context.root} && clasp create --type ${scriptType} --title "${appName}" --rootDir ./dist`, { stdio: 'inherit' });
+  moveFiles(path.resolve(context.dist, '.clasp.json'), context.root)
 };
 
 const clone = (context, { scriptId }) => {
