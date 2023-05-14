@@ -6,8 +6,10 @@ This plugins expects you to have following version.
 
 |Module|Version|
 |---|---|
+|Node.js|`v16.x`|
 |Clasp|at least version `v2.4.1`|
 |Vue CLI|`v4.x`|
+|Vue|`v2.x`|
 
 ### Setup:
 
@@ -20,7 +22,7 @@ npm -g install @google/clasp // or yarn global add @google/clasp
 #### 2. Create your Vue Project
 
 ```javascript
-vue create <project_name>
+vue create <project_name> // Select "Vue 2" Preset
 cd <project_name>
 ```
 
