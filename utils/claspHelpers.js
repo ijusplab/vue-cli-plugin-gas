@@ -50,7 +50,7 @@ const getPaths = (api) => {
 
 const isInstalled = () => {
   try {
-    const raw = getJson(require.resolve('@google/clasp/package.json')).version;
+    const raw = execSync('clasp --version').toString()
     let [major, minor, patch] = raw.split('.').map(n => parseInt(n, 10));
     let min = '2.4.1';
     let isCompatible = major > 2 || (major === 2 && minor >= 4 && patch >= 1 );
