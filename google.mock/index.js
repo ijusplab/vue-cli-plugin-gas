@@ -90,46 +90,56 @@ const responseMapping = initializeMockData(__GOOGLE_MOCK_RESPONSES__);
 
 class Runner {
   constructor() {
+    this.funcCalls = [];
+    this.callCount = 0;
     return enableServerMockedMethods(this);
   }
   withFailureHandler(fn) {
     if (typeof fn !== 'function') throw new Error('You have to pass a function to withFailureHandler.')
-    this.failureHandler = fn;
+    if (this.funcCalls.length === this.callCount) this.funcCalls.push({});
+    this.funcCalls[this.callCount].failureHandler = fn;
     return this;
   }
   withSuccessHandler(fn) {
     if (typeof fn !== 'function') throw new Error('You have to pass a function to withSuccessHandler.')
-    this.successHandler = fn;
+    if (this.funcCalls.length === this.callCount) this.funcCalls.push({});
+    this.funcCalls[this.callCount].successHandler = fn;
     return this;
   }
   withUserObject(obj) {
-    if (typeof fn !== 'object') throw new Error('You have to pass an object to withUserObject.')
-    this.userObject = obj;
+    if (typeof obj !== 'object') throw new Error('You have to pass an object to withUserObject.')
+    if (this.funcCalls.length === this.callCount) this.funcCalls.push({});
+    this.funcCalls[this.callCount].userObject = obj;
     return this;
   }
   __mockedMethod__(name) {
     const style = 'color: white; font-style: bold; background-color: #0277BD; padding: 2px 5px; border-radius: 3px;'
     console.info(`In production, you would have called the server-side %c${name} method`, style);
+    if (this.funcCalls.length === this.callCount) this.funcCalls.push({});
+    const _callCount = this.callCount++;
 
     if (responseMapping.has(name)) {
       const mockInfo = responseMapping.get(name);
       if (mockInfo.isSuccess) {
-        if (this.successHandler) {
+        const successHandler = this.funcCalls[_callCount].successHandler;
+        if (successHandler) {
           setTimeout(() => {
-            this.successHandler(mockInfo.response, this.userObject);
+            successHandler(mockInfo.response, this.funcCalls[_callCount].userObject);
           }, 0);
         }
       } else {
-        if (this.failureHandler) {
+        const failureHandler = this.funcCalls[_callCount].failureHandler;
+        if (failureHandler) {
           setTimeout(() => {
-            this.failureHandler(mockInfo.response, this.userObject);
+            failureHandler(mockInfo.response, this.funcCalls[_callCount].userObject);
           }, 0);
         }
       }
     } else {
-      if (this.successHandler) {
+      const successHandler = this.funcCalls[_callCount].successHandler;
+      if (successHandler) {
         setTimeout(() => {
-          this.successHandler('in case of success it would respond within the successHandler callback, with the following user object:', this.userObject);
+          successHandler('in case of success it would respond within the successHandler callback, with the following user object:', this.funcCalls[_callCount].userObject);
         }, 0);
       }
     }
