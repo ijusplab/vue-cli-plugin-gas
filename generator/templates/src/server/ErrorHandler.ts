@@ -1,6 +1,3 @@
-/* eslint-disable  @typescript-eslint/ban-ts-ignore */
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-
 'use strict';
 
 interface IError {

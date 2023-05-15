@@ -38,7 +38,6 @@ module.exports = (api, options) => {
       gitignoreFile: '.gitignore',
       indexFile: 'public/index.html',
       readme: 'README.md',
-      vuetifyPluginFile: usesTypescript && 'src/plugins/vuetify.ts' in files ? 'src/plugins/vuetify.ts' : false,
       tsConfig: usesTypescript ? 'tsconfig.json' : false
     });
   });

@@ -6,9 +6,6 @@ const updaters = (api, options) => {
 
   const entryFile = (content) => {
 
-    const usesTypescript = api.hasPlugin('typescript');
-    const usesEslint = api.hasPlugin('eslint');
-
     const lines = content.split(/\r?\n/g);
 
     lines[0] = [
@@ -17,20 +14,7 @@ const updaters = (api, options) => {
       lines[0]
     ].join('\n');
 
-    if (usesTypescript && usesEslint) {
-      lines[0] = [
-        '/* eslint-disable  @typescript-eslint/ban-ts-ignore */',
-        '',
-        lines[0]
-      ].join('\n');
-    }
-
-    if (usesTypescript && /vuetify,/.test(content)) {
-      lineIndex = lines.findIndex(line => line.match(/vuetify,/));
-      lines[lineIndex] = '\t//@ts-ignore\n' + lines[lineIndex];
-    }
-
-    lineIndex = lines.findIndex(line => line.match(/new Vue/));
+    const lineIndex = lines.findIndex(line => line.match(/new Vue/));
     lines[lineIndex - 1] = [
       lines[lineIndex - 1],
       `Vue.use(VueGasPlugin, {`,
@@ -153,28 +137,6 @@ const updaters = (api, options) => {
     return text.replace(/\{\{\s*appName\s*\}\}/, appName);
   }
 
-  const vuetifyPluginFile = (content) => {
-
-    const { usesTypescript, usesEslint } = options;
-
-    const lines = content.split(/\r?\n/g);
-
-    if (usesTypescript) {
-      if (usesEslint) {
-        lines[0] = [
-          '/* eslint-disable  @typescript-eslint/ban-ts-ignore */',
-          '',
-          lines[0]
-        ].join('\n');
-      }
-
-      let lineIndex = lines.findIndex(line => line.match(/import Vuetify/));
-      lines[lineIndex] = '//@ts-ignore\n' + lines[lineIndex];
-    }
-
-    return lines.join('\n');
-  }
-
   const tsConfig = (content) => {
 
     const tsConfigObj = JSON.parse(content);
@@ -196,7 +158,6 @@ const updaters = (api, options) => {
     gitignoreFile,
     indexFile,
     readme,
-    vuetifyPluginFile,
     tsConfig
   }
 };
