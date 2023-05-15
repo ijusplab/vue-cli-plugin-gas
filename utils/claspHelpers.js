@@ -137,7 +137,7 @@ const authenticate = (context) => {
   return isLogged();
 };
 
-const setProject = (context, { createScript, scriptId, scriptType, appName }) => {  
+const setProject = (context, { createScript, scriptId, scriptType, appName }) => {
   info('⚙️ Setting up project with Clasp...');
   clearDir(context.dist);
   if (createScript) {
@@ -152,7 +152,13 @@ const setProject = (context, { createScript, scriptId, scriptType, appName }) =>
 const adjustSettings = (context, { timeZone, createScript }) => {
   info('⚙️ Adjusting Clasp settings...');
   if (createScript) {
-    setManifest(context, { timeZone });
+    setManifest(context, {
+      timeZone,
+      webapp: {
+        access: 'MYSELF',
+        executeAs: 'USER_ACCESSING'
+      }
+    });
     copyFiles(context.manifest.local, context.dist);
     claspNative('push', '--force', context);
   } else {
