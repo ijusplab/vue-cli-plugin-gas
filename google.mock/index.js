@@ -73,6 +73,21 @@ const enableServerMockedMethods = (obj) => {
   });
 }
 
+const initializeMockData = (mockData) => {
+  const mapper = new Map();
+  if (mockData) {
+    for (const functionName of Object.keys(mockData)) {
+      mapper.set(functionName, {
+        isSuccess: mockData[functionName].isSuccess ? true : false,
+        response: mockData[functionName].response
+      });
+    }
+  }
+  return mapper;
+}
+
+const responseMapping = initializeMockData(__GOOGLE_MOCK_RESPONSES__);
+
 class Runner {
   constructor() {
     return enableServerMockedMethods(this);
@@ -95,10 +110,28 @@ class Runner {
   __mockedMethod__(name) {
     const style = 'color: white; font-style: bold; background-color: #0277BD; padding: 2px 5px; border-radius: 3px;'
     console.info(`In production, you would have called the server-side %c${name} method`, style);
-    if (this.successHandler) {
-      setTimeout(() => {
+
+    if (responseMapping.has(name)) {
+      const mockInfo = responseMapping.get(name);
+      if (mockInfo.isSuccess) {
+        if (this.successHandler) {
+          setTimeout(() => {
+            this.successHandler(mockInfo.response, this.userObject);
+          }, 0);
+        }
+      } else {
+        if (this.failureHandler) {
+          setTimeout(() => {
+            this.failureHandler(mockInfo.response, this.userObject);
+          }, 0);
+        }
+      }
+    } else {
+      if (this.successHandler) {
+        setTimeout(() => {
           this.successHandler('in case of success it would respond within the successHandler callback, with the following user object:', this.userObject);
-      }, 0);
+        }, 0);
+      }
     }
   }
 }
