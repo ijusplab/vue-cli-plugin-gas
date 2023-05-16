@@ -8,7 +8,7 @@ module.exports = (api) => {
     {
       name: 'vue',
       var: 'Vue',
-      path: 'dist/vue.min.js'
+      path: process.env.NODE_ENV === 'production' ? 'dist/vue.min.js' : 'dist/vue.js'
     }
   ];
 
