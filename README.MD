@@ -112,12 +112,9 @@ This plugin already adds the following scripts to your project's `package.json`:
 | ------ | ----------------- | ----------- |
 | `change-timezone` | `vue-cli-service change-timezone` | changes timezone in local manifest | - |
 | `deploy` | `vue-cli-service deploy` | builds for production and pushes the output to Google Drive under a new version (accepts the `--description` option) |
-| `inspect` | `vue-cli-service inspect --mode development > wp.dev.output.js && vue-cli-service inspect --mode production > wp.prod.output.js` | pipes development and production webpack configurations into the files `wp.dev.output.js` and `wp.prod.output.js` |
 | `pull` | `vue-cli-service pull` | pulls all remote files and places them into the local `dist` folder (**_it will not update source code_**) |
 | `push` | `vue-cli-service push` | builds for development and pushes the output to Google Drive |
 | `watch` | `vue-cli-service watch` | builds for development in watch mode and pushes the output to Google Drive each time webpack recompiles |
-
-The `wp.dev.output.js` and `wp.prod.output.js` files produced by the `inspect` script will be already scaped for linting and version control in `.eslintignore` and `.gitignore`.
 
 > IMPORTANT:
 > 1. Be careful while using `deploy`, `push` or `watch` in a cloned project, because it will overwrite all your code in Google Drive.
@@ -133,7 +130,6 @@ The `wp.dev.output.js` and `wp.prod.output.js` files produced by the `inspect` s
 npm run change-timezone // or yarn change-timezone
 npm run deploy // or yarn deploy
 npm run deploy --description "This is a new version" // or yarn deploy --description "This is a new version"
-npm run inspect // or yarn inspect
 npm run pull // or yarn pull
 npm run push // or yarn push
 npm run push --mode production // or yarn push --mode production

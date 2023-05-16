@@ -78,8 +78,7 @@ module.exports = (api, { addLicense, licenseName }) => {
       "deploy": "vue-cli-service deploy",
       "push": "vue-cli-service push",
       "pull": "vue-cli-service pull",
-      "watch": "vue-cli-service watch",
-      "inspect": "vue-cli-service inspect --mode development > wp.dev.output.js && vue-cli-service inspect --mode production > wp.prod.output.js"
+      "watch": "vue-cli-service watch"
     },
     devDependencies: {
       "@types/google-apps-script": "^1.0.10",
