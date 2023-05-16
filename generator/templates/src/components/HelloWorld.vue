@@ -1,6 +1,6 @@
 ---
 extend: '@vue/cli-service/generator/template/src/components/HelloWorld.vue'
-replace: 
+replace:
   - !!js/regexp /<\/div>([\s\S]*?)<\/template>/
   - !!js/regexp /<script>[^]*?<\/script>/
 ---

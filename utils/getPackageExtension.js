@@ -18,7 +18,7 @@ module.exports = (api, { addLicense, licenseName }) => {
       configureWebpack: config => {
         config.watchOptions = {
           ignored: /node_modules/,
-          aggregateTimeout: 1000            
+          aggregateTimeout: 1000
         };
         config.devServer = {
           watchOptions: {

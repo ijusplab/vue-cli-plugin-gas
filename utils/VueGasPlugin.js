@@ -6,7 +6,7 @@ export default {
     }
     Vue.prototype.$google = google
     Vue.prototype.$devMode = devMode
-  
+
     Vue.prototype.$callLibraryMethod = (library, method, ...args) => {
       return new Promise((resolve, reject) => {
         google.script.run
@@ -15,13 +15,13 @@ export default {
           .callback(library, method, ...args)
       })
     }
-  
+
     Vue.prototype.$log = (payload) => {
       if (devMode) {
         google.script.run.log(payload)
       }
     }
-  
+
     Vue.prototype.$errorHandler = (e) => {
       google.script.run.errorHandler({
         message: e.message,

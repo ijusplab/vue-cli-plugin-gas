@@ -27,7 +27,7 @@ module.exports = (api, options) => {
   const dist = api.resolve('dist');
 
   const service = new Service(api);
-  const { build } = api.service.commands  
+  const { build } = api.service.commands
 
   api.chainWebpack(config => {
 
@@ -95,7 +95,7 @@ module.exports = (api, options) => {
           callback: () => service.push('--force')
         }]);
     }
-    
+
   });
 
   api.registerCommand('pull',
