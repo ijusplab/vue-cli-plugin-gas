@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/ijusplab/vue-cli-plugin-gas">
+  <a style="pointer-events:none;">
     <img src="https://raw.githubusercontent.com/ijusplab/vue-cli-plugin-gas/master/logo.png" width="300">
   </a>
 </p>
