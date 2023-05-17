@@ -1,5 +1,5 @@
 <p align="center">
-  <a tabindex="-1">
+  <a href="https://github.com/ijusplab/vue-cli-plugin-gas">
     <img src="https://raw.githubusercontent.com/ijusplab/vue-cli-plugin-gas/master/logo.png" width="300">
   </a>
 </p>
