@@ -4,11 +4,24 @@ module.exports = (api) => {
   const usesRouter = api.hasPlugin('router');
   const usesVuetify = api.hasPlugin('vuetify');
 
+  const vue = require('vue');
+  const [major, minor, patch] = vue.version.split('.').map(n => parseInt(n, 10));
+  const vueFileName = {
+    'production': {
+      2: 'vue.min.js',
+      3: 'vue.global.prod.js'
+    },
+    'development': {
+      2: 'vue.js',
+      3: 'vue.global.js'
+    }
+  };
+
   let modules = [
     {
       name: 'vue',
       var: 'Vue',
-      path: process.env.NODE_ENV === 'production' ? 'dist/vue.min.js' : 'dist/vue.js'
+      path: `dist/${vueFileName[process.env.NODE_ENV][major]}`
     }
   ];
 

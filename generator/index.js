@@ -13,7 +13,16 @@ module.exports = (api, options) => {
 
   api.render('./templates');
 
-  api.injectImports(api.entryFile, `import './plugins/gas';`);
+  const vue = require('vue');
+  const [major, minor, patch] = vue.version.split('.').map(n => parseInt(n, 10));
+  if (major === 2) {
+    api.injectImports(api.entryFile, `import './plugins/gas';`);
+  } else if (major === 3) {
+    api.injectImports(api.entryFile, [
+      `import google from '@ijusplab/vue-cli-plugin-gas/google.mock'`,
+      `import VueGasPlugin from '@ijusplab/vue-cli-plugin-gas/utils/VueGasPlugin'`
+    ]);
+  }
 
   api.postProcessFiles(files => {
 
@@ -31,6 +40,7 @@ module.exports = (api, options) => {
     ]);
 
     updater.update({
+      entryFile: (major === 3) ? api.entryFile : false,
       vueComponent: 'src/components/HelloWorld.vue',
       envFile: '.env',
       eslintrcFile: usesEslint ? 'src/server/.eslintrc.json' : false,

@@ -19,9 +19,11 @@ replace:
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String,
-    response: String
+    msg: String
   },
+  data: () => ({
+    response: ''
+  }),
   mounted() {
     this.$google.script.run
       .withSuccessHandler((response) => {

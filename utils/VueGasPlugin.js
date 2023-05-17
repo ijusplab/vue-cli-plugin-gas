@@ -4,10 +4,11 @@ export default {
       const style = 'color: white; font-style: bold; background-color: #BF360C; padding: 5px;'
       console.info('%c DEVELOPMENT MODE ', style)
     }
-    Vue.prototype.$google = google
-    Vue.prototype.$devMode = devMode
+    const globalProperties = Vue.config.globalProperties !== undefined ? Vue.config.globalProperties : Vue.prototype;
+    globalProperties.$google = google
+    globalProperties.$devMode = devMode
 
-    Vue.prototype.$callLibraryMethod = (library, method, ...args) => {
+    globalProperties.$callLibraryMethod = (library, method, ...args) => {
       return new Promise((resolve, reject) => {
         google.script.run
           .withSuccessHandler(res => resolve(res))
@@ -16,13 +17,13 @@ export default {
       })
     }
 
-    Vue.prototype.$log = (payload) => {
+    globalProperties.$log = (payload) => {
       if (devMode) {
         google.script.run.log(payload)
       }
     }
 
-    Vue.prototype.$errorHandler = (e) => {
+    globalProperties.$errorHandler = (e) => {
       google.script.run.errorHandler({
         message: e.message,
         stack: e.stack

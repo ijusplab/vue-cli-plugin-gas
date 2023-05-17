@@ -2,6 +2,22 @@ const { warn } = require('./logHelpers');
 
 const updaters = (api, options) => {
 
+  const entryFile = (content) => {
+    const lines = content.split(/\r?\n/g);
+
+    const lineIndex = lines.findIndex(line => line.match(/createApp\(App\)/));
+    lines[lineIndex] = [
+      `const app = createApp(App)`,
+      `app.use(VueGasPlugin, {`,
+      `  google,`,
+      `  devMode: process.env.NODE_ENV !== 'production'`,
+      `})`,
+      `app.mount('#app')`
+    ].join('\n');
+
+    return lines.join('\n');
+  }
+
   const vueComponent = (content) => {
 
     const style = [
@@ -118,6 +134,7 @@ const updaters = (api, options) => {
   }
 
   return {
+    entryFile,
     vueComponent,
     envFile,
     eslintrcFile,
