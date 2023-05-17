@@ -1,6 +1,4 @@
-const path = require('path');
-const { readFileSync } = require('fs');
-const { info, warn } = require('./logHelpers');
+const { warn } = require('./logHelpers');
 
 const updaters = (api, options) => {
 
@@ -131,12 +129,6 @@ const updaters = (api, options) => {
     return content;
   }
 
-  const readme = (content) => {
-    const { appName } = options;
-    const text = readFileSync(path.resolve(__dirname, './README.template.MD'), { encode: 'utf8' }).toString();
-    return text.replace(/\{\{\s*appName\s*\}\}/, appName);
-  }
-
   const tsConfig = (content) => {
 
     const tsConfigObj = JSON.parse(content);
@@ -157,7 +149,6 @@ const updaters = (api, options) => {
     licenseFile,
     gitignoreFile,
     indexFile,
-    readme,
     tsConfig
   }
 };

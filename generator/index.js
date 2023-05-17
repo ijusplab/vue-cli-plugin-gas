@@ -37,7 +37,6 @@ module.exports = (api, options) => {
       licenseFile: addLicense ? 'LICENSE' : false,
       gitignoreFile: '.gitignore',
       indexFile: 'public/index.html',
-      readme: 'README.md',
       tsConfig: usesTypescript ? 'tsconfig.json' : false
     });
   });
