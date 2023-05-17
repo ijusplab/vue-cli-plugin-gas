@@ -1,5 +1,7 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/ijusplab/vue-cli-plugin-gas/master/logo.png" width="300">
+  <a tabindex="-1">
+    <img src="https://raw.githubusercontent.com/ijusplab/vue-cli-plugin-gas/master/logo.png" width="300">
+  </a>
 </p>
 
 [![clasp](https://img.shields.io/badge/built%20with-clasp-4285f4.svg)](https://github.com/google/clasp)
