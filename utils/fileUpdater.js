@@ -2,29 +2,6 @@ const { warn } = require('./logHelpers');
 
 const updaters = (api, options) => {
 
-  const entryFile = (content) => {
-
-    const lines = content.split(/\r?\n/g);
-
-    lines[0] = [
-      `import google from '@ijusplab/vue-cli-plugin-gas/google.mock'`,
-      `import VueGasPlugin from '@ijusplab/vue-cli-plugin-gas/utils/VueGasPlugin'`,
-      lines[0]
-    ].join('\n');
-
-    const lineIndex = lines.findIndex(line => line.match(/new Vue/));
-    lines[lineIndex - 1] = [
-      lines[lineIndex - 1],
-      `Vue.use(VueGasPlugin, {`,
-      `  google,`,
-      `  devMode: process.env.NODE_ENV !== 'production'`,
-      `})`,
-      ''
-    ].join('\n');
-
-    return lines.join('\n');
-  }
-
   const vueComponent = (content) => {
 
     const style = [
@@ -141,7 +118,6 @@ const updaters = (api, options) => {
   }
 
   return {
-    entryFile,
     vueComponent,
     envFile,
     eslintrcFile,

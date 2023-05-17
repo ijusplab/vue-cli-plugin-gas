@@ -13,6 +13,8 @@ module.exports = (api, options) => {
 
   api.render('./templates');
 
+  api.injectImports(api.entryFile, `import './plugins/gas';`);
+
   api.postProcessFiles(files => {
 
     const { addLicense } = options;
@@ -29,7 +31,6 @@ module.exports = (api, options) => {
     ]);
 
     updater.update({
-      entryFile: api.entryFile,
       vueComponent: 'src/components/HelloWorld.vue',
       envFile: '.env',
       eslintrcFile: usesEslint ? 'src/server/.eslintrc.json' : false,
