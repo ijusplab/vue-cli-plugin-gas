@@ -5,7 +5,7 @@ module.exports = (api) => {
   const usesVuetify = api.hasPlugin('vuetify');
 
   const vue = require('vue');
-  const [major, minor, patch] = vue.version.split('.').map(n => parseInt(n, 10));
+  const [major] = vue.version.split('.').map(n => parseInt(n, 10));
   const vueFileName = {
     'production': {
       2: 'vue.min.js',
@@ -28,13 +28,13 @@ module.exports = (api) => {
   if (usesVuex) modules.push({
     name: 'vuex',
     var: 'Vuex',
-    path: 'dist/vuex.min.js'
+    path: (major === 3) ? 'dist/vuex.global.prod.js' : 'dist/vuex.min.js'
   });
 
   if (usesRouter) modules.push({
     name: 'vue-router',
     var: 'VueRouter',
-    path: 'dist/vue-router.js'
+    path: (major === 3) ? 'dist/vue-router.global.prod.js' : 'dist/vue-router.js'
   });
 
   if (usesVuetify) modules.push({
