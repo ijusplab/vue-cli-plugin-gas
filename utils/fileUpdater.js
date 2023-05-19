@@ -6,12 +6,8 @@ const updaters = (api, options) => {
     const lines = content.split(/\r?\n/g);
 
     const lineIndex = lines.findIndex(line => line.match(/createApp\(App\)/));
-    lines[lineIndex] = [
-      `const app = createApp(App)`,
-      `app.use(VueGasPlugin)`,
-      `app.mount('#app')`
-    ].join('\n');
-
+    const result = /(.*)\.mount\('#app'\)/.exec(lines[lineIndex])
+    lines[lineIndex] = `${result[1]}.use(VueGasPlugin).mount('#app')`
     return lines.join('\n');
   }
 
