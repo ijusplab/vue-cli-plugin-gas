@@ -33,6 +33,7 @@ npm -g install @google/clasp #or yarn global add @google/clasp
 ### 2. Create your Vue Project
 
 ```bash
+vue --version # confirm Vue CLI is v4.
 vue create <project_name>
 cd <project_name>
 ```
@@ -50,7 +51,7 @@ All server-side code must be placed inside the `src/server` folder as `js` or `t
 
 Any constants you define in your `.env` file starting with `VUE_APP` or `GAS_APP` will be available for you inside server-side code as properties of `process.env`. But remember they are not actually constants, but merely placeholders for preprocessing.
 
-Your Vue app will be the front-end. It will be bundled and inlined in your `index.html` in production. Vue, Vuex, Vue-Router, and Vuetify (in case you decide to plug them in) are all consumed as node modules during development, but loaded via CDN in production using the `webpack-cdn-plugin`.
+Your Vue app will be the front-end. It will be bundled and inlined in your `index.html` in production. Vue, Vuex, Vue-Router([known issues](https://github.com/ijusplab/vue-cli-plugin-gas/issues/14)), and Vuetify (in case you decide to plug them in) are all consumed as node modules during development, but loaded via CDN in production using the `webpack-cdn-plugin`.
 
 ## google.script API mocking
 
