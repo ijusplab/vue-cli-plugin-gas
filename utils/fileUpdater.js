@@ -73,7 +73,6 @@ const updaters = (api, options) => {
 
   const eslintignoreFile = (content) => {
     return [
-      '*.output.js',
       'vue.config.js'
     ].join('\n');
   };
