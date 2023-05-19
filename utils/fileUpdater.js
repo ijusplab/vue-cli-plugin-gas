@@ -9,7 +9,6 @@ const updaters = (api, options) => {
     lines[lineIndex] = [
       `const app = createApp(App)`,
       `app.use(VueGasPlugin, {`,
-      `  google,`,
       `  devMode: process.env.NODE_ENV !== 'production'`,
       `})`,
       `app.mount('#app')`

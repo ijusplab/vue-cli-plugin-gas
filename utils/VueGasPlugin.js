@@ -1,5 +1,7 @@
+import google from '@ijusplab/vue-cli-plugin-gas/google.mock'
+
 export default {
-  install(Vue, { google, devMode }) {
+  install(Vue, { devMode }) {
     if (devMode) {
       const style = 'color: white; font-style: bold; background-color: #BF360C; padding: 5px;'
       console.info('%c DEVELOPMENT MODE ', style)

@@ -18,10 +18,7 @@ module.exports = (api, options) => {
   if (major === 2) {
     api.injectImports(api.entryFile, `import './plugins/gas';`);
   } else if (major === 3) {
-    api.injectImports(api.entryFile, [
-      `import google from '@ijusplab/vue-cli-plugin-gas/google.mock'`,
-      `import VueGasPlugin from '@ijusplab/vue-cli-plugin-gas/utils/VueGasPlugin'`
-    ]);
+    api.injectImports(api.entryFile, `import VueGasPlugin from '@ijusplab/vue-cli-plugin-gas/utils/VueGasPlugin'`);
   }
 
   api.postProcessFiles(files => {
