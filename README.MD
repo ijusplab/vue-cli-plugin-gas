@@ -20,39 +20,39 @@ This plugins expects you to have following version.
 |Node.js|`v16.x`|
 |Clasp|at least version `v2.4.1`|
 |Vue CLI|`v4.x`|
-|Vue|`v2.x`|
+|Vue|`v2.x` or `v3.x` (But not support Composition API)|
 
-### Setup:
+## Getting Started
 
-#### 1. Install Clasp globally
+### 1. Install Clasp globally
 
-```javascript
-npm -g install @google/clasp // or yarn global add @google/clasp
+```bash
+npm -g install @google/clasp #or yarn global add @google/clasp
 ```
 
-#### 2. Create your Vue Project
+### 2. Create your Vue Project
 
-```javascript
-vue create <project_name> // Select "Vue 2" Preset
+```bash
+vue create <project_name>
 cd <project_name>
 ```
 
-#### 3. Add the plugin
+### 3. Add the plugin
 
-```javascript
+```bash
 vue add @ijusplab/vue-cli-plugin-gas
 ```
 > Important: When running the script, in case you are not already authenticated, the plugin will execute `clasp login` behind the scenes, which may result in clasp asking you for permissions to access your google account.
 
-#### 4. Project\'s structure
+##  Project\'s structure
 
 All server-side code must be placed inside the `src/server` folder as `js` or `ts` files and will not be bundled by webpack, but `ts` files will be processed by [ts2gas](https://github.com/grant/ts2gas) during compilation.
 
 Any constants you define in your `.env` file starting with `VUE_APP` or `GAS_APP` will be available for you inside server-side code as properties of `process.env`. But remember they are not actually constants, but merely placeholders for preprocessing.
 
-Your Vue app will be the front-end. It will be bundled and inlined in your `index.html` in production. Vue, Vuex and Vue-Router (in case you decide to plug them in) are all consumed as node modules during development, but loaded via CDN in production using the `webpack-cdn-plugin`.
+Your Vue app will be the front-end. It will be bundled and inlined in your `index.html` in production. Vue, Vuex, Vue-Router, and Vuetify (in case you decide to plug them in) are all consumed as node modules during development, but loaded via CDN in production using the `webpack-cdn-plugin`.
 
-#### 5. google.script API mocking
+## google.script API mocking
 
 Any global functions you create inside server-side files will be automatically mocked during development, so that your calls to `google.script.run` won\'t break.
 
@@ -62,11 +62,11 @@ The `google` global object will be available in the Vue instance as `$google`. T
 
 In development, you can mock up the response of server-side functions. Seeing file (`./src/mock-data/responseMock.js`), you will find the example. You can specify mock data with JavaScript Object. The property name is server-side function name, and value is object which has two properties, `isSuccess` and `response`. If `isSuccess` is true, then `withSuccessHandler` will be invoked, if that is false, then `withFailureHandler` will be invoked. At that time, `response` will path as the first argument.
 
-#### 6. Environment variables
+## Environment variables
 
 You can change your project\'s name and favicon in the `.env` file by setting the following variables: `VUE_APP_TITLE` and `VUE_APP_FAVICON`. The value of `VUE_APP_FAVICON` should be a url to an external public resource.
 
-#### 7. vue-cli-service commands
+## vue-cli-service commands
 
 The plugin introduces five new commands to the vue-cli-service: `deploy`, `login`, `pull`, `push`, `syncmanifest` and `watch`.
 
@@ -85,22 +85,20 @@ The plugin introduces five new commands to the vue-cli-service: `deploy`, `login
 > 1. The `pull` command **_will not update source code_**.
 
 
-```javascript
-/*
-  usage:
-*/
-vue-cli-service change-timezone // or npx vue-cli-service change-timezone
-vue-cli-service deploy // or npx vue-cli-service deploy
-vue-cli-service deploy --description "This is a new version" // or npx vue-cli-service deploy --description "This is a new version"
-vue-cli-service login // or npx vue-cli-service login
-vue-cli-service pull // or npx vue-cli-service pull
-vue-cli-service push // or npx vue-cli-service push
-vue-cli-service syncmanifest // or npx vue-cli-service syncmanifest
+```bash
+# usage:
+vue-cli-service change-timezone # or npx vue-cli-service change-timezone
+vue-cli-service deploy # or npx vue-cli-service deploy
+vue-cli-service deploy --description "This is a new version" # or npx vue-cli-service deploy --description "This is a new version"
+vue-cli-service login # or npx vue-cli-service login
+vue-cli-service pull # or npx vue-cli-service pull
+vue-cli-service push # or npx vue-cli-service push
+vue-cli-service syncmanifest # or npx vue-cli-service syncmanifest
 ```
 
 By tweeking the `scripts` property of your `package.json` file you may combine these new commands among themselves and with Vue CLI natives `serve` and `build`.
 
-#### 8. npm scripts
+## npm scripts
 
 This plugin already adds the following scripts to your project's `package.json`:
 
@@ -119,17 +117,15 @@ This plugin already adds the following scripts to your project's `package.json`:
 > 1. When running the `watch` command, in order to pull changes to Google Drive each time webpack recompiles.
 > 1. In order to push code in production without changing version number, you just need to use `npm run push --mode production`.
 
-```javascript
-/*
-  usage:
-*/
-npm run change-timezone // or yarn change-timezone
-npm run deploy // or yarn deploy
-npm run deploy --description "This is a new version" // or yarn deploy --description "This is a new version"
-npm run pull // or yarn pull
-npm run push // or yarn push
-npm run push --mode production // or yarn push --mode production
-npm run watch // or yarn watch
+```bash
+# usage:
+npm run change-timezone # or yarn change-timezone
+npm run deploy # or yarn deploy
+npm run deploy --description "This is a new version" # or yarn deploy --description "This is a new version"
+npm run pull # or yarn pull
+npm run push # or yarn push
+npm run push --mode production # or yarn push --mode production
+npm run watch # or yarn watch
 ```
 
 If you want to use these commands otherwise or wish to know more about Clasp commands' general usage and restrictions, please refer directly to the [Clasp documentation](https://github.com/google/clasp/).
