@@ -64,14 +64,6 @@ In development, you can mock up the response of server-side functions. Seeing fi
 
 > IMPORTANT: if the value is string, it must include actual quotes inside of the string itself.
 
-The Vue instance will also have the boolean property `$devMode`, which will be true when `process.env.NODE_ENV !== 'production'`, as well as three custom methods: `$callLibraryMethod`, `$log` and `$errorHandler`, which are intended to work together with the `callback`, `log` and `errorHandler` server-side functions.
-
-The first of these methods is useful to call methods of libraries you use as dependencies in your server-side code or of any other global namespace. You should pass to it the following parameters: `library:string`, `method:string` and `args:array`. It returns a `Promise`.
-
-The `$log` and `$errorHandler` methods are useful if you want to send client-side debug messages or errors to the Stackdriver Logging console. They don't have return values.
-
-> IMPORTANT: The `$log` method does not work in production.
-
 #### 6. Environment variables
 
 You can change your project\'s name and favicon in the `.env` file by setting the following variables: `VUE_APP_TITLE` and `VUE_APP_FAVICON`. The value of `VUE_APP_FAVICON` should be a url to an external public resource.

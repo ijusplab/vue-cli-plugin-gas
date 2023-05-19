@@ -8,9 +8,7 @@ const updaters = (api, options) => {
     const lineIndex = lines.findIndex(line => line.match(/createApp\(App\)/));
     lines[lineIndex] = [
       `const app = createApp(App)`,
-      `app.use(VueGasPlugin, {`,
-      `  devMode: process.env.NODE_ENV !== 'production'`,
-      `})`,
+      `app.use(VueGasPlugin)`,
       `app.mount('#app')`
     ].join('\n');
 

@@ -9,10 +9,6 @@ function doGet(e: GoogleAppsScript.Events.DoGet) {
     .setFaviconUrl(process.env.VUE_APP_FAVICON);
 }
 
-const callback = (library: string, method: string, ...args: any) => {
-  return this[library][method].apply(this, args);
-}
-
 function sampleFunction(): string {
   return 'This is production mode';
 }

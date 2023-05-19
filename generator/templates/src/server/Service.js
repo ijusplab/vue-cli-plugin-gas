@@ -9,10 +9,6 @@ function doGet(e) {
     .setFaviconUrl(process.env.VUE_APP_FAVICON);
 }
 
-const callback = (library, method, ...args) => {
-  return this[library][method].apply(this, args);
-}
-
 function sampleFunction() {
   return 'This is production mode';
 }

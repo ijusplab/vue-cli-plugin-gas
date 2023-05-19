@@ -32,7 +32,6 @@ module.exports = (api, options) => {
     const updater = new FileUpdater(api, options, files);
 
     updater.delete([
-      usesTypescript ? 'src/server/ErrorHandler.js' : 'src/server/ErrorHandler.ts',
       usesTypescript ? 'src/server/Service.js' : 'src/server/Service.ts'
     ]);
 
