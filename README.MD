@@ -62,8 +62,6 @@ The `google` global object will be available in the Vue instance as `$google`. T
 
 In development, you can mock up the response of server-side functions. Seeing file (`./src/mock-data/responseMock.js`), you will find the example. You can specify mock data with JavaScript Object. The property name is server-side function name, and value is object which has two properties, `isSuccess` and `response`. If `isSuccess` is true, then `withSuccessHandler` will be invoked, if that is false, then `withFailureHandler` will be invoked. At that time, `response` will path as the first argument.
 
-> IMPORTANT: if the value is string, it must include actual quotes inside of the string itself.
-
 #### 6. Environment variables
 
 You can change your project\'s name and favicon in the `.env` file by setting the following variables: `VUE_APP_TITLE` and `VUE_APP_FAVICON`. The value of `VUE_APP_FAVICON` should be a url to an external public resource.

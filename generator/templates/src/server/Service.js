@@ -1,7 +1,7 @@
 'use strict';
 
 function doGet(e) {
-  var html = HtmlService.createTemplateFromFile('index');
+  const html = HtmlService.createTemplateFromFile('index');
   return html.evaluate()
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
@@ -10,5 +10,7 @@ function doGet(e) {
 }
 
 function sampleFunction() {
-  return 'This is production mode';
+  return {
+    mode: 'This is production mode'
+  };
 }

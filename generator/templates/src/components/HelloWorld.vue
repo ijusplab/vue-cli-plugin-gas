@@ -24,7 +24,7 @@ export default {
   mounted() {
     this.$google.script.run
       .withSuccessHandler((response) => {
-        this.response = response
+        this.response = response.mode
       })
       .sampleFunction()
   }
