@@ -17,6 +17,28 @@ module.exports = (api) => {
     }
   };
 
+  const vueRouterFileName = {
+    'production': {
+      2: 'vue-router.min.js',
+      3: 'vue-router.global.prod.js'
+    },
+    'development': {
+      2: 'vue-router.js',
+      3: 'vue-router.global.js'
+    }
+  };
+
+  const vuexFileName = {
+    'production': {
+      2: 'vuex.min.js',
+      3: 'vuex.global.prod.js'
+    },
+    'development': {
+      2: 'vuex.js',
+      3: 'vuex.global.js'
+    }
+  };
+
   let modules = [
     {
       name: 'vue',
@@ -28,13 +50,13 @@ module.exports = (api) => {
   if (usesVuex) modules.push({
     name: 'vuex',
     var: 'Vuex',
-    path: (major === 3) ? 'dist/vuex.global.prod.js' : 'dist/vuex.min.js'
+    path: `dist/${vuexFileName[process.env.NODE_ENV][major]}`
   });
 
   if (usesRouter) modules.push({
     name: 'vue-router',
     var: 'VueRouter',
-    path: (major === 3) ? 'dist/vue-router.global.prod.js' : 'dist/vue-router.js'
+    path: `dist/${vueRouterFileName[process.env.NODE_ENV][major]}`
   });
 
   if (usesVuetify) modules.push({
