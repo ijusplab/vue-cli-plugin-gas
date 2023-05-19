@@ -4,7 +4,8 @@ const { Installer } = require('../utils/claspHelpers');
 const FileUpdater = require('../utils/fileUpdater');
 const { info } = require('../utils/logHelpers');
 
-module.exports = (api, options) => {
+module.exports = (api, options, rootOptions) => {
+  const isVue3 = (rootOptions.vueVersion === '3')
 
   const packageName = api.generator.pkg.name;
   options.appName = camelCase(packageName, { pascalCase: true });
@@ -13,12 +14,10 @@ module.exports = (api, options) => {
 
   api.render('./templates');
 
-  const vue = require('vue');
-  const [major, minor, patch] = vue.version.split('.').map(n => parseInt(n, 10));
-  if (major === 2) {
-    api.injectImports(api.entryFile, `import './plugins/gas';`);
-  } else if (major === 3) {
+  if (isVue3) {
     api.injectImports(api.entryFile, `import VueGasPlugin from '@ijusplab/vue-cli-plugin-gas/utils/VueGasPlugin'`);
+  } else {
+    api.injectImports(api.entryFile, `import './plugins/gas';`);
   }
 
   api.postProcessFiles(files => {
@@ -32,11 +31,12 @@ module.exports = (api, options) => {
     const updater = new FileUpdater(api, options, files);
 
     updater.delete([
+      isVue3 ? 'src/plugins/gas.js' : '',
       usesTypescript ? 'src/server/Service.js' : 'src/server/Service.ts'
     ]);
 
     updater.update({
-      entryFile: (major === 3) ? api.entryFile : false,
+      entryFile: (isVue3) ? api.entryFile : false,
       vueComponent: 'src/components/HelloWorld.vue',
       envFile: '.env',
       eslintrcFile: usesEslint ? 'src/server/.eslintrc.json' : false,
