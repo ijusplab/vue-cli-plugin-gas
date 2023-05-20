@@ -216,6 +216,13 @@ class Service {
     return claspNative('deploy', options, this.context);
   }
 
+  getLatestDeploymentId() {
+    const result = execSync(`cd ${this.context.root} && clasp deployments`).toString();
+    const deployments = result.split(/\n/).filter(line => line.match(/^\-\s/));
+    const regexResult = /^-\s(.*)\s@.+$/.exec(deployments[deployments.length - 1]);
+    return regexResult[1];
+  }
+
   updateManifest(data) {
     updateManifest(this.context, data);
   }

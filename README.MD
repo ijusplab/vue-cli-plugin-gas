@@ -74,7 +74,7 @@ The plugin introduces five new commands to the vue-cli-service: `deploy`, `login
 | command | description | options |
 | ------ | ------------ | ------- |
 | `change-timezone` | Syncs manifest file and changes timezone in local manifest. | - |
-| `deploy` | Syncs manifest file, builds for production and pushes the output to Google Drive under a new version. Runs part of `syncmanifest`, `vu-cli-service build`, `clasp push` and `clasp deploy` behind the scenes. | <nobr>`--description`</nobr> |
+| `deploy` | Syncs manifest file, builds for production and pushes the output to Google Drive under a new version. Runs part of `syncmanifest`, `vu-cli-service build`, `clasp push` and `clasp deploy` behind the scenes. | <nobr>`--description`, `--redeployLatest`</nobr> |
 | `login` | Checks if you are already authenticated with Google and authenticates you if you are not. | - |
 | `pull` | Pulls all remote files and places them into the local `dist` folder. Runs `clasp pull` behind the scenes. | - |
 | `push` | Syncs manifest file, builds for development and pushes the output to Google Drive. Runs part of `syncmanifest`, `vu-cli-service build` and `clasp push` behind the scenes. | - |
@@ -91,6 +91,7 @@ The plugin introduces five new commands to the vue-cli-service: `deploy`, `login
 vue-cli-service change-timezone # or npx vue-cli-service change-timezone
 vue-cli-service deploy # or npx vue-cli-service deploy
 vue-cli-service deploy --description "This is a new version" # or npx vue-cli-service deploy --description "This is a new version"
+vue-cli-service deploy --redeployLatest # or npx vue-cli-service deploy --redeployLatest
 vue-cli-service login # or npx vue-cli-service login
 vue-cli-service pull # or npx vue-cli-service pull
 vue-cli-service push # or npx vue-cli-service push
@@ -106,7 +107,7 @@ This plugin already adds the following scripts to your project's `package.json`:
 | script | commands executed | description |
 | ------ | ----------------- | ----------- |
 | `change-timezone` | `vue-cli-service change-timezone` | changes timezone in local manifest | - |
-| `deploy` | `vue-cli-service deploy` | builds for production and pushes the output to Google Drive under a new version (accepts the `--description` option) |
+| `deploy` | `vue-cli-service deploy` | builds for production and pushes the output to Google Drive under a new version (accepts the `--description` and `--redeployLatest` option) |
 | `pull` | `vue-cli-service pull` | pulls all remote files and places them into the local `dist` folder (**_it will not update source code_**) |
 | `push` | `vue-cli-service push` | builds for development and pushes the output to Google Drive |
 | `watch` | `vue-cli-service watch` | builds for development in watch mode and pushes the output to Google Drive each time webpack recompiles |
@@ -122,10 +123,11 @@ This plugin already adds the following scripts to your project's `package.json`:
 # usage:
 npm run change-timezone # or yarn change-timezone
 npm run deploy # or yarn deploy
-npm run deploy --description "This is a new version" # or yarn deploy --description "This is a new version"
+npm run deploy -- --description "This is a new version" # or yarn deploy --description "This is a new version"
+npm run deploy -- --redeployLatest # or yarn deploy --redeployLatest
 npm run pull # or yarn pull
 npm run push # or yarn push
-npm run push --mode production # or yarn push --mode production
+npm run push -- --mode production # or yarn push --mode production
 npm run watch # or yarn watch
 ```
 

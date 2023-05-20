@@ -152,7 +152,10 @@ module.exports = (api, options) => {
     {
       description: 'Deploys the GAS script to Google Drive for production, fully minified, and updates version',
       usage: 'vue-cli-service deploy [options]',
-      options: { '--description ': 'The deployment description.' }
+      options: {
+        '--description': 'The deployment description.',
+        '--redeployLatest': 'redeploy by latest deployment id.'
+      }
     },
     args => {
       process.env.VUE_APP_WATCH_MODE = 'false';
@@ -164,7 +167,15 @@ module.exports = (api, options) => {
         info('\nUpdating files in Google Drive...\n');
         service.push();
         info('\nUpdating project version...\n');
-        service.deploy(args.description ? `--description ${args.description}` : null);
+        options = '';
+        if (args.description) {
+          options += `--description ${args.description}`;
+        }
+        if (args.redeployLatest) {
+          if (options) options += ' ';
+          options += `--deploymentId ${service.getLatestDeploymentId()}`;
+        }
+        service.deploy(options);
       });
     }
   );
